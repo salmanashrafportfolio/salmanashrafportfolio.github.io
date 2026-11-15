@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Animated Blue Silk Hero Texture</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #050a3a; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  .ui {
+    position: fixed; left: 16px; bottom: 16px; display: flex; gap: 8px;
+    font: 12px/1 system-ui, sans-serif; z-index: 2;
+  }
+  .ui button {
+    background: rgba(255,255,255,.08); color: #cfd6ff; border: 1px solid rgba(255,255,255,.18);
+    padding: 8px 12px; border-radius: 999px; cursor: pointer; backdrop-filter: blur(6px);
+  }
+  .ui button:hover { background: rgba(255,255,255,.16); }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="ui">
+  <button id="pause">Pause</button>
+  <button id="grain">Grain: on</button>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+
+const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p,0.,1.); }`;
+const fs = `
+precision highp float;
+uniform vec2 uRes;
+uniform float uTime;
+uniform float uGrain;
+
+// hash / noise
+float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p,p+45.32); return fract(p.x*p.y); }
+float noise(vec2 p){
+  vec2 i=floor(p), f=fract(p);
+  vec2 u=f*f*(3.-2.*f);
+  return mix(mix(hash(i),hash(i+vec2(1,0)),u.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x), u.y);
+}
+float fbm(vec2 p){
+  float v=0., a=.5;
+  for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.02; a*=.5; }
+  return v;
+}
+
+void main(){
+  vec2 uv = gl_FragCoord.xy / uRes;          // 0..1, y up
+  float aspect = uRes.x / uRes.y;
+  vec2 p = vec2(uv.x*aspect, uv.y);
+  float t = uTime * 0.12;
+
+  // gentle domain warp for silky motion
+  vec2 w = vec2(fbm(p*1.2 + vec2(t, -t*.6)), fbm(p*1.2 + vec2(-t*.7, t*.4) + 5.2));
+  vec2 q = p + (w - .5) * .35;
+
+  // main wave crest: a curve rising from lower-left, peaking around x~0.6, falling right
+  float x = q.x / aspect;
+  float crest = 0.30
+              + 0.22 * exp(-pow((x - 0.60 - 0.05*sin(t*1.3))*4.0, 2.))
+              + 0.06 * sin(x*5.0 + t*2.0)
+              - 0.10 * x;
+  float d = q.y - crest;                     // >0 above wave, <0 below
+
+  // light field: bright top-left, falling off to bottom-right
+  float light = smoothstep(1.25, 0.05, distance(uv, vec2(0.12, 0.85)) * 1.15);
+
+  // fold shading: shadow just under the crest, soft sheen along its ridge
+  float shadow = smoothstep(0.03, -0.16, d);                  // darker below the crest
+  float ridge  = exp(-pow(d*9.0, 2.)) * 0.35;                 // sheen on the ridge
+  float valley = smoothstep(-0.05, -0.45, d) * (0.5 + 0.5*fbm(q*2.0 - t)); // deep pocket
+
+  // secondary softer fold in the upper-right
+  float d2 = q.y - (0.62 + 0.08*sin(x*3.0 - t*1.5) + 0.25*x);
+  float fold2 = exp(-pow(d2*4.0, 2.)) * 0.18;
+
+  vec3 bright = vec3(0.13, 0.20, 0.98);
+  vec3 mid    = vec3(0.07, 0.10, 0.70);
+  vec3 dark   = vec3(0.03, 0.04, 0.30);
+  vec3 deep   = vec3(0.01, 0.02, 0.10);
+
+  vec3 col = mix(mid, bright, light);
+  col = mix(col, dark, smoothstep(0.35, 1.0, uv.x) * 0.75 * (1. - light)); // right side darker
+  col = mix(col, dark, shadow * 0.85);
+  col = mix(col, deep, valley * 0.75);
+  col += vec3(0.10, 0.12, 0.45) * ridge * (0.4 + light);
+  col -= vec3(0.02, 0.03, 0.12) * fold2;
+
+  // animated film grain
+  float g = hash(gl_FragCoord.xy + fract(uTime*7.31)*vec2(91.7, 37.3)) - 0.5;
+  float lum = dot(col, vec3(.3,.4,.3));
+  col += g * uGrain * (0.16 + 0.10*(1. - lum)) * vec3(0.7, 0.75, 1.0);
+
+  // vignette
+  col *= 1.0 - 0.25 * pow(distance(uv, vec2(.45,.55)), 2.);
+
+  gl_FragColor = vec4(clamp(col, 0., 1.), 1.);
+}`;
+
+function sh(type, src){
+  const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s));
+  return s;
+}
+const prog = gl.createProgram();
+gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs));
+gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs));
+gl.linkProgram(prog); gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog, 'p');
+gl.enableVertexAttribArray(loc);
+gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+const uRes = gl.getUniformLocation(prog, 'uRes');
+const uTime = gl.getUniformLocation(prog, 'uTime');
+const uGrain = gl.getUniformLocation(prog, 'uGrain');
+
+function resize(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.floor(innerWidth * dpr);
+  canvas.height = Math.floor(innerHeight * dpr);
+  gl.viewport(0, 0, canvas.width, canvas.height);
+}
+addEventListener('resize', resize); resize();
+
+let paused = false, grain = 1, t = 0, last = performance.now();
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(now){
+  const dt = (now - last) / 1000; last = now;
+  if(!paused && !reduce) t += dt;
+  gl.uniform2f(uRes, canvas.width, canvas.height);
+  gl.uniform1f(uTime, t);
+  gl.uniform1f(uGrain, grain);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+document.getElementById('pause').onclick = e => { paused = !paused; e.target.textContent = paused ? 'Play' : 'Pause'; };
+document.getElementById('grain').onclick = e => { grain = grain ? 0 : 1; e.target.textContent = 'Grain: ' + (grain ? 'on' : 'off'); };
+</script>
+</body>
+</html>
