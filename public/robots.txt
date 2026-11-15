@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://salmanportfolio-inky.vercel.app/sitemap.xml
+Sitemap: https://msalmanbhatti.github.io/sitemap.xml

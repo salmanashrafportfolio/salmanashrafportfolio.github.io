@@ -39,4 +39,4 @@ salman-bhatti-portfolio-recreation/
 - Styling, responsive breakpoints and animation/hover states are in `src/styles.css`.
 
 ## Notes
-The layout is an independent front-end recreation, not the original site's source code. All content and images come from https://salmanportfolio-inky.vercel.app/. It has no backend, analytics, or legal documents.
+The layout is an independent front-end recreation, not the original site's source code. All content and images come from https://msalmanbhatti.github.io/. It has no backend, analytics, or legal documents.
