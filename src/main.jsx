@@ -155,6 +155,14 @@ function Header({ setPage, goSection }) {
   const { t } = useLang();
   const go = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
   const ref = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  // Escape closes the mobile menu
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
   useEffect(() => {
     const el = ref.current; if (!el) return;
     const set = () => document.documentElement.style.setProperty('--header-space', `${el.offsetHeight + parseFloat(getComputedStyle(el).marginTop)}px`);
@@ -175,10 +183,13 @@ function Header({ setPage, goSection }) {
     window.addEventListener('resize', update);
     return () => { window.removeEventListener('scroll', update); window.removeEventListener('resize', update); };
   });
-  return <header className="header" ref={ref}>
+  return <header className={menuOpen ? 'header menu-open' : 'header'} ref={ref}>
     <button className="brand" onClick={() => go('home')} aria-label={t.home}><span className="brand-text space-grotesk" aria-hidden="true">salman</span></button>
-    <nav className="nav-links" aria-label={t.mainNav}>
-      {NAV.map(([id, key]) => <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); goSection(id); }}>{t[key]}</a>)}
+    <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-controls="site-nav" aria-label={menuOpen ? 'Close menu' : 'Open menu'} onClick={() => setMenuOpen(o => !o)}>
+      <span className="menu-bars" aria-hidden="true"><i/><i/><i/></span>
+    </button>
+    <nav className="nav-links" id="site-nav" aria-label={t.mainNav}>
+      {NAV.map(([id, key]) => <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); setMenuOpen(false); goSection(id); }}>{t[key]}</a>)}
     </nav>
   </header>;
 }
