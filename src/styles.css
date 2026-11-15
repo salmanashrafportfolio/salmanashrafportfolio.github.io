@@ -739,3 +739,10 @@ html,body{overflow-x:clip}
   .timeline>li:active h3,.skill:active h3,.case-card:active h3{color:var(--accent-deep)}
   .pill-link:active,.hero .pill-link:active{transform:translateY(-1px);transition:transform .1s ease}
 }
+
+/* ---------- iPhone Safari: certificates row was blank; drop the mask on phones and give the moving track its own layer ---------- */
+@media(max-width:860px){
+  .cert-marquee,.travel-marquee{-webkit-mask-image:none;mask-image:none;isolation:isolate}
+  .cert-track,.travel-track{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);will-change:transform}
+  .cert-track .cert,.travel-track figure{-webkit-transform:translateZ(0);transform:translateZ(0)}
+}
