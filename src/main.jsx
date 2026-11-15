@@ -715,7 +715,7 @@ function App() {
   useEffect(closeZoom,[page,closeZoom]);
   const [cookie,setCookie] = useState(!localStorage.getItem('sb-cookie'));
   const [settings,setSettings] = useState(false);
-  useEffect(()=>{const link=document.querySelector('link[rel="canonical"]');const url='https://msalmanbhatti.github.io'+(page==='notfound'?'/':pageToPath(page));if(link)link.href=url;const og=document.querySelector('meta[property="og:url"]');if(og)og.setAttribute('content',url);},[page]);
+  useEffect(()=>{const link=document.querySelector('link[rel="canonical"]');const url='https://salmanashrafportfolio.github.io'+(page==='notfound'?'/':pageToPath(page));if(link)link.href=url;const og=document.querySelector('meta[property="og:url"]');if(og)og.setAttribute('content',url);},[page]);
   useEffect(()=>{document.title = page==='notfound'?'Page not found — Salman Bhatti':page==='home'?t.titleHome:page==='about'?t.titleAbout:page==='work'?t.titleWork:`${projects.find(p=>p.id===page)?.name || t.work} — Salman Bhatti`;},[page,t]);
   useEffect(()=>{window.scrollTo({top:0,behavior:'instant'});if(page==='notfound')return;const target=pageToPath(page);if(window.location.pathname!==target)window.history.pushState({depth:(window.history.state?.depth??-1)+1},'',target);else if(window.history.state?.depth==null)window.history.replaceState({depth:0},'');depth.current=window.history.state.depth;},[page]);
   const [section,setSection] = useState(null);

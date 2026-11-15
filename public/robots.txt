@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://msalmanbhatti.github.io/sitemap.xml
+Sitemap: https://salmanashrafportfolio.github.io/sitemap.xml
