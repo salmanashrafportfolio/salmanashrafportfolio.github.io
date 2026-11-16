@@ -580,7 +580,7 @@ export const experience = [
 
 export const education = [
   { title: 'M.Sc. Media Informatics', org: 'Universität des Saarlandes', dates: 'Apr 2025 – Present', place: 'Germany', points: [
-    'Relevant coursework: Human-Computer Interaction, Living “AI-ducation” Dashboard (data visualization), Media Art & Design Project, Human–AI Interaction Study Design (research seminar), Designing Human Oversight of AI for “Good Work” (research seminar).'
+    'Relevant coursework: Human-Computer Interaction, Living “AI-ducation” Dashboard (data visualization), Media Art & Design Project, Designing Human Oversight of AI for “Good Work” (seminar), From Research Ideas to Empirical Study Designs in Human–AI Interaction (seminar).'
   ] },
   { title: 'B.Sc. Computer Science', org: 'GC University', dates: 'Oct 2019 – Dec 2023', place: 'Lahore', points: [
     'Relevant coursework: Software Engineering, Advanced Software Engineering, Software Development Process, Artificial Intelligence & Neural Networks, Probability & Statistics, Database Systems, Communication & Presentation Skills, Technical & Business Writing.'
