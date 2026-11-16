@@ -496,7 +496,7 @@ export const projects = [
     hero: [img('websites_cover.webp'), 'Website UI Design Collection: six responsive websites for electrical, services, ERP, SaaS and construction clients'],
     sections: [
       { title: 'All In One Electric', text: 'Freelance project, designed alone.', blocks: [
-        facts([['Role', 'UX/UI Designer'], ['Timeline', '2024'], ['Team', 'Freelance client, designed alone'], ['Tools', 'Figma']]),
+        facts([['Role', 'UX/UI Designer'], ['Timeline', 'October 2024'], ['Team', 'Freelance client, designed alone'], ['Tools', 'Figma']]),
         figs(2, [
           ['aio_home.webp', 'All In One Electric home page, full length', 'Home'],
           ['aio_about.webp', 'All In One Electric about page, full length', 'About'],
