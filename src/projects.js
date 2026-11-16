@@ -321,7 +321,7 @@ export const projects = [
           ['muq_components.webp', 'Design system components', '**Components:** five documented components with do and don’t rules.']
         ]),
         sub('Auditing & improving components'),
-        para('After designing the app, I audited the Figma component library and identified issues involving **naming, variant properties, hard-coded colors, semantic token assignments, and component documentation.**'),
+        para('After designing the app, I audited the Figma component library with Claude via Figma MCP and identified seven issues involving **naming, variant properties, hard-coded colors, semantic token assignments, and component documentation.**'),
         para('I used Claude via Figma MCP to assist in identifying inconsistencies and automating repetitive updates. I reviewed the findings, made the design decisions, and manually verified the results.'),
         sub('Example: Status Badge refactoring'),
         table(null, [['Before', 'Multiple status variants incorrectly displayed “Connected” because they shared the same text property.'], ['After', 'I refactored the component so that Connected, Brewing, and Error states displayed their appropriate labels.']]),
@@ -560,6 +560,99 @@ export const projects = [
           ['erp_contact.webp', 'Sumato ERP contact page, full length', 'Contact']
         ], false, true)
       ] }
+    ]
+  },
+  {
+    id: 'eden', number: '06', name: 'EDEN Terrarium',
+    title: 'EDEN: a smart dual-zone terrarium that people trust',
+    description: 'Led the evaluation, video and documentation for EDEN, a smart dual-zone terrarium. A study with two users showed 4.1/5 trust in its sensing and led to zone-level alerts.',
+    lede: 'EDEN is a smart dual-zone terrarium that monitors two zones and sends alerts when conditions need attention. In a team of five, I led the evaluation, video and documentation to test whether non-experts trust the terrarium’s alerts and act on them.',
+    tags: ['Evaluation', 'User Research', 'IoT'],
+    live: ['https://eden-terrarium.vercel.app/', 'eden-terrarium.vercel.app'],
+    headerImage: true,
+    hero: [img('eden_dash_home.webp'), 'EDEN dashboard, home view', '**The EDEN dashboard:** the home view of the terrarium monitor.'],
+    meta: [
+      ['My role', 'Evaluation lead, video & documentation'],
+      ['Team', 'Team of 5'],
+      ['Timeline', 'April 2026 – June 2026'],
+      ['Type', 'Academic project']
+    ],
+    sections: [
+      { title: 'Evaluation', text: 'The question was simple: do non-experts trust the terrarium’s alerts, and do they act on them?', blocks: [
+        stats([['2', 'users in the study'], ['4.1/5', 'sensing trust'], ['6/6', 'soil readings correct']]),
+        para('Participants rated how much they trusted the sensing and checked the soil readings against the reference values. The findings led to **zone-level alerts**, so users can see which zone needs attention.')
+      ] },
+      { title: 'Dashboard', blocks: [
+        figs(2, [
+          ['eden_dash_zones.webp', 'EDEN dashboard, zones view', 'Zones'],
+          ['eden_architecture.webp', 'EDEN system architecture', 'Architecture']
+        ])
+      ] }
+    ]
+  },
+  {
+    id: 'pipeline', number: '07', name: 'Data Quality Pipeline',
+    title: 'Product Data Quality Pipeline: clean data for Power BI',
+    description: 'A Python pipeline that validates records against 14 rules and removes duplicates, so Power BI reports run on clean product data. Tested with pytest against ground truth.',
+    lede: 'A Python pipeline that checks and cleans a product dataset of 2,496 records before it reaches Power BI. It validates each record against 14 rules, removes duplicates, and is tested with pytest against known, injected errors.',
+    tags: ['Python', 'Data Quality', 'Testing'],
+    coverLabel: 'PYTHON · DATA',
+    links: [['https://github.com/msalmanbhatti/product-data-quality', 'GitHub repository']],
+    meta: [
+      ['My role', 'Built and tested the pipeline'],
+      ['Timeline', 'October 2026'],
+      ['Tools', 'Python, pandas, pytest, Power BI']
+    ],
+    impact: [['2,496', 'records validated and deduplicated'], ['14', 'validation rules'], ['94.9%', 'of injected errors found']],
+    sections: [
+      { title: 'Validation & cleaning', blocks: [
+        para('Power BI reports are only as good as their data. The pipeline runs every record through **14 validation rules**, then removes duplicates so each product appears once.')
+      ] },
+      { title: 'Testing', text: 'The pipeline was tested against a ground-truth set with known errors.', blocks: [
+        stats([['94.9%', 'of injected errors found'], ['100%', 'duplicate precision']])
+      ] }
+    ]
+  },
+  {
+    id: 'applyd', number: '08', name: 'Applyd',
+    title: 'Applyd: a job application tracker with a Kanban board',
+    description: 'A full-stack job application tracker with a drag-and-drop Kanban board, so each application’s stage is visible at a glance.',
+    lede: 'Applyd is a job application tracker built end to end with Next.js, TypeScript and Supabase. Applications move across a drag-and-drop Kanban board so each stage is visible at a glance, and Row Level Security keeps each user’s data private.',
+    tags: ['Full-stack', 'UX Design', 'Next.js'],
+    coverLabel: 'FULL-STACK',
+    links: [['https://github.com/msalmanbhatti/application-tracker', 'GitHub repository']],
+    meta: [
+      ['My role', 'Designer & developer'],
+      ['Timeline', 'October 2026'],
+      ['Tools', 'Next.js, TypeScript, Supabase']
+    ],
+    sections: [
+      { title: 'Design', text: 'Job searches involve many applications at different stages. The board makes the current stage of each one visible without opening it.', blocks: [
+        list(['A drag-and-drop Kanban board: move an application to its next stage', 'Stage visible at a glance across all applications'])
+      ] },
+      { title: 'Build', blocks: [
+        list(['Full-stack app with Next.js and TypeScript', 'Supabase backend with **Row Level Security**, so each user sees only their own applications'])
+      ] }
+    ]
+  },
+  {
+    id: 'designcrafters', number: '09', name: 'Design Crafters',
+    title: 'Design Crafters: a freelance marketplace for creatives',
+    description: 'Bachelor thesis: designed the complete front end of a MERN freelance marketplace where creatives find clients, verified with unit tests.',
+    lede: 'Design Crafters is a freelance marketplace where creatives find clients. For my bachelor thesis, I designed the complete front end in a team of two and built it on the MERN stack, verifying sign-up, gigs and orders with unit tests before integration.',
+    tags: ['Bachelor Thesis', 'UI Design', 'MERN'],
+    coverLabel: 'BACHELOR THESIS',
+    meta: [
+      ['My role', 'Front-end design & development'],
+      ['Team', 'Team of 2'],
+      ['Timeline', 'November 2023'],
+      ['Stack', 'MongoDB, Express.js, React.js, Node.js']
+    ],
+    sections: [
+      { title: 'Front end', blocks: [
+        list(['Complete front end of the marketplace, designed and built', 'Bootstrap, HTML/CSS and React.js for the interface'])
+      ] },
+      { title: 'Testing', text: 'Sign-up, gigs and orders were verified with unit tests before the front end was integrated with the back end.', blocks: [] }
     ]
   }
 ];

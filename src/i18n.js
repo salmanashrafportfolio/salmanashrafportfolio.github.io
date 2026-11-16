@@ -100,5 +100,9 @@ export const deDescriptions = {
   ar: 'Ein Augmented-Reality-Erlebnis für Besucher von Weihnachtsmärkten gestaltet – mit Sprachsuche, blickbasierter Navigation und Übersetzung, erarbeitet durch Feldforschung und Usability-Tests.',
   muq: 'Die Oberfläche der Companion-App für einen BLE-fähigen Smart Mug gestaltet und ein wiederverwendbares Designsystem mit Design-Tokens und Komponenten dokumentiert.',
   elearning: 'Einen 15-minütigen digitalen Lernkurs über menschliche Faktoren in der Instandhaltung gestaltet und entwickelt und das Erlebnis mithilfe von Reviewer-Feedback verbessert.',
-  websites: 'Eine Plattform für Hausdienstleistungen, eine Plattform für Sicherheits-Compliance, eine Website für Bau und Solar sowie die Unternehmens- und Produktwebsites von Sumato.'
+  websites: 'Eine Plattform für Hausdienstleistungen, eine Plattform für Sicherheits-Compliance, eine Website für Bau und Solar sowie die Unternehmens- und Produktwebsites von Sumato.',
+  eden: 'Die Evaluation, das Video und die Dokumentation für EDEN, ein intelligentes Terrarium mit zwei Zonen, geleitet. Eine Studie mit zwei Nutzern zeigte 4,1/5 Vertrauen in die Sensorik und führte zu zonenbezogenen Warnungen.',
+  pipeline: 'Eine Python-Pipeline, die 2.496 Datensätze anhand von 14 Regeln prüft und Duplikate entfernt, damit Power BI mit sauberen Produktdaten arbeitet. Mit pytest gegen eine Referenzmenge getestet.',
+  applyd: 'Einen Tracker für Bewerbungen als Full-Stack-Anwendung gebaut, mit einem Kanban-Board per Drag-and-Drop, damit der Stand jeder Bewerbung auf einen Blick sichtbar ist.',
+  designcrafters: 'Das komplette Front End eines Freelance-Marktplatzes für Kreative im MERN-Stack gestaltet und entwickelt, mit Unit-Tests verifiziert. Bachelorarbeit.'
 };
