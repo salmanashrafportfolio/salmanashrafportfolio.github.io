@@ -10,14 +10,13 @@ const LINKEDIN = 'https://www.linkedin.com/in/m-salman-bhatti';
 const INSTAGRAM = 'https://www.instagram.com/salmancapturedthis/';
 const CV_URL = '/Muhammad_Salman_Bhatti_CV.pdf';
 const GITHUB = 'https://github.com/msalmanbhatti';
-const routes = ['home', 'work', 'about', 'meet', ...projects.map(p => p.id)];
+const routes = ['home', 'work', 'about', ...projects.map(p => p.id)];
 // Real addresses: / , /work , /about , /work/<project>
 function pathToPage(pathname) {
   const clean = pathname.replace(/\/+$/, '') || '/';
   if (clean === '/') return 'home';
   if (clean === '/work') return 'work';
   if (clean === '/about') return 'about';
-  if (clean === '/meet') return 'meet';
   const m = clean.match(/^\/work\/([a-z0-9-]+)$/i);
   if (m && routes.includes(m[1])) return m[1];
   return 'notfound';
@@ -26,7 +25,6 @@ function pageToPath(page) {
   if (page === 'home') return '/';
   if (page === 'work') return '/work';
   if (page === 'about') return '/about';
-  if (page === 'meet') return '/meet';
   return '/work/' + page;
 }
 
@@ -192,7 +190,6 @@ function Header({ setPage, goSection }) {
     </button>
     <nav className="nav-links" id="site-nav" aria-label={t.mainNav}>
       {NAV.map(([id, key]) => <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); setMenuOpen(false); goSection(id); }}>{t[key]}</a>)}
-      <a href="/meet" className="meet-link" onClick={(e) => { e.preventDefault(); setMenuOpen(false); setPage('meet'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Meet Salman</a>
     </nav>
   </header>;
 }
@@ -510,62 +507,6 @@ function AboutContent({ home = false, part = 'all' }) {
   </>;
 }
 
-// "Meet Salman": an avatar and a free-text chat that answers from Salman's CV and projects.
-const MEET_SUGGESTIONS = ['What kind of UX/UI work do you do?', 'Tell me about your Sumato ERP work', 'Are you open to internships in Germany?', 'What did you learn from The Dirty Dozen course?'];
-function MeetPage() {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-  const endRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [messages, busy]);
-  const send = async (text) => {
-    const q = (text ?? input).trim();
-    if (!q || busy) return;
-    const next = [...messages, { role: 'user', content: q }];
-    setMessages(next); setInput(''); setBusy(true); setError('');
-    try {
-      const r = await fetch('/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages: next }) });
-      const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || 'The assistant is unavailable right now.');
-      setMessages([...next, { role: 'assistant', content: data.reply }]);
-    } catch (e) {
-      setError(e.message || 'The assistant is unavailable right now.');
-    } finally {
-      setBusy(false);
-    }
-  };
-  return <main id="main" className="inner-page section-pad meet-page">
-    <div className="meet-intro">
-      <img className="meet-avatar" src="/salman-paris.webp" alt="Salman Bhatti" width="96" height="96"/>
-      <div>
-        <h1>Meet <em>Salman.</em></h1>
-        <p>Ask me anything about my work, studies or experience. I answer from my CV and projects.</p>
-      </div>
-    </div>
-    <div className="meet-chat">
-      <div className="meet-log" role="log" aria-live="polite">
-        {messages.length === 0 && <div className="meet-suggest">
-          <p>Try a question:</p>
-          <div>{MEET_SUGGESTIONS.map(q => <button key={q} type="button" className="meet-chip" onClick={() => send(q)}>{q}</button>)}</div>
-        </div>}
-        {messages.map((m, i) => <div key={i} className={m.role === 'user' ? 'meet-msg user' : 'meet-msg bot'}>
-          {m.role === 'assistant' && <img className="meet-msg-avatar" src="/salman-paris.webp" alt=""/>}
-          <p>{m.content}</p>
-        </div>)}
-        {busy && <div className="meet-msg bot"><img className="meet-msg-avatar" src="/salman-paris.webp" alt=""/><p className="meet-typing" aria-label="Typing">…</p></div>}
-        {error && <p className="meet-error" role="alert">{error}</p>}
-        <div ref={endRef}/>
-      </div>
-      <form className="meet-form" onSubmit={(e) => { e.preventDefault(); send(); }}>
-        <label className="sr-only" htmlFor="meet-input">Your question</label>
-        <input id="meet-input" type="text" value={input} maxLength={800} onChange={(e) => setInput(e.target.value)} placeholder="Ask about my projects, skills or experience" disabled={busy}/>
-        <button type="submit" className="pill-link" disabled={busy || !input.trim()}>Send <ArrowRight size={17}/></button>
-      </form>
-    </div>
-  </main>;
-}
-
 function AboutPage() {
   const { t } = useLang();
   return <main id="main" className="inner-page section-pad">
@@ -786,7 +727,7 @@ function App() {
   const [cookie,setCookie] = useState(!localStorage.getItem('sb-cookie'));
   const [settings,setSettings] = useState(false);
   useEffect(()=>{const link=document.querySelector('link[rel="canonical"]');const url='https://salmanashrafportfolio.github.io'+(page==='notfound'?'/':pageToPath(page));if(link)link.href=url;const og=document.querySelector('meta[property="og:url"]');if(og)og.setAttribute('content',url);},[page]);
-  useEffect(()=>{document.title = page==='notfound'?'Page not found — Salman Bhatti':page==='home'?t.titleHome:page==='about'?t.titleAbout:page==='meet'?'Meet Salman | Salman Bhatti':page==='work'?t.titleWork:`${projects.find(p=>p.id===page)?.name || t.work} — Salman Bhatti`;},[page,t]);
+  useEffect(()=>{document.title = page==='notfound'?'Page not found — Salman Bhatti':page==='home'?t.titleHome:page==='about'?t.titleAbout:page==='work'?t.titleWork:`${projects.find(p=>p.id===page)?.name || t.work} — Salman Bhatti`;},[page,t]);
   useEffect(()=>{window.scrollTo({top:0,behavior:'instant'});if(page==='notfound')return;const target=pageToPath(page);if(window.location.pathname!==target)window.history.pushState({depth:(window.history.state?.depth??-1)+1},'',target);else if(window.history.state?.depth==null)window.history.replaceState({depth:0},'');depth.current=window.history.state.depth;},[page]);
   const [section,setSection] = useState(null);
   const goSection = useCallback((id) => { setSection({ id }); setPage('home'); }, []);
@@ -798,7 +739,6 @@ function App() {
     {page==='home' && <main id="main"><Hero setPage={setPage}/><WorkSection setPage={setPage}/><HomeAbout/><HomeAboutMore/></main>}
     {page==='work' && <main id="main"><WorkSection setPage={setPage} standalone/></main>}
     {page==='about' && <AboutPage/>}
-    {page==='meet' && <MeetPage/>}
     {page==='notfound' && <main id="main" className="inner-page section-pad not-found"><h1>Page not found</h1><p>This address doesn’t lead to a page on this site.</p><button className="pill-link" onClick={() => setPage('home')}>Back to home <ArrowRight size={17}/></button></main>}
     {projects.some(p=>p.id===page) && <ProjectPage id={page} setPage={setPage}/>}
     <Footer/>
