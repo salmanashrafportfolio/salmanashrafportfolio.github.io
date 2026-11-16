@@ -32,7 +32,7 @@ export const projects = [
       ['What I did', 'Met Sumato’s clients, analysed the live ERP screens, and designed a POS built for quick order entry, a clearer dashboard hierarchy and shared interaction patterns across modules.'],
       ['Result', 'The POS was deployed to 10+ client businesses, 8 ERP areas were redesigned and implemented in the live product, and ERP and POS share one design system.']
     ],
-    impact: [['10+', 'client deployments: the new POS module was deployed to more than ten client businesses'], ['5', 'ERP modules redesigned and implemented in the live product'], ['1', 'shared design system: a component library, design tokens and consistent interaction patterns across ERP and POS']],
+    impact: [['10+', 'client deployments: the new POS module was deployed to more than ten client businesses'], ['8', 'ERP areas redesigned and implemented in the live product'], ['1', 'shared design system: a component library, design tokens and consistent interaction patterns across ERP and POS']],
     sections: [
       { title: 'Research & discovery', blocks: [
         sub('What I did'),
