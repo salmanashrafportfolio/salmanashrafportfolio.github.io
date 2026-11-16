@@ -20,7 +20,7 @@ export const projects = [
     id: 'sumato', number: '01', name: 'Sumato ERP',
     noFacts: true,
     title: 'Sumato ERP: a fast POS and one consistent pattern across the platform',
-    description: 'Designed a POS module deployed to more than 10 client environments, redesigned five data-heavy ERP modules, and built reusable components to support consistency and collaboration across the product.',
+    description: 'Designed a POS module deployed to more than 10 client environments, redesigned eight ERP areas, and built reusable components to support consistency and collaboration across the product.',
     lede: 'Sumato ERP is a cloud-based enterprise resource planning platform for small and medium-sized businesses. I worked as the sole UX/UI designer, improving the usability of existing ERP modules and designing a new point-of-sale (POS) experience.',
     tags: ['Enterprise UX/UI', 'Web Application', 'Design Systems'],
     live: ['https://sumatoerp.com/', 'sumatoerp.com'],
@@ -30,7 +30,7 @@ export const projects = [
     story: [
       ['The challenge', 'Dense dashboards hid important business information, similar actions behaved differently across modules, non-technical users needed simpler workflows, and clients lacked a dedicated POS for counter sales.'],
       ['What I did', 'Met Sumato’s clients, analysed the live ERP screens, and designed a POS built for quick order entry, a clearer dashboard hierarchy and shared interaction patterns across modules.'],
-      ['Result', 'The POS was deployed to 10+ client businesses, 5 ERP modules were redesigned and implemented in the live product, and ERP and POS share one design system.']
+      ['Result', 'The POS was deployed to 10+ client businesses, 8 ERP areas were redesigned and implemented in the live product, and ERP and POS share one design system.']
     ],
     impact: [['10+', 'client deployments: the new POS module was deployed to more than ten client businesses'], ['5', 'ERP modules redesigned and implemented in the live product'], ['1', 'shared design system: a component library, design tokens and consistent interaction patterns across ERP and POS']],
     sections: [
@@ -130,7 +130,7 @@ export const projects = [
       { title: 'Results & impact', blocks: [
         list([
           'The new POS module was deployed to **more than ten client businesses**.',
-          '**5 ERP modules** were redesigned and implemented in the live product.',
+          '**8 ERP areas** were redesigned and implemented in the live product.',
           'A **shared design system** across ERP and POS: component library, design tokens and consistent interaction patterns.'
         ]),
         sub('Not measured'),
@@ -573,7 +573,7 @@ export const testimonials = [
 ];
 
 export const experience = [
-  { title: 'UX/UI Designer', org: 'Sumato Solutions', dates: 'June 2024 – May 2025', place: 'Pakistan', desc: 'I designed the POS module and redesigned five data-heavy ERP modules, working in Scrum sprints with a product manager, three developers and two QA testers. Busy screens slowed down cashiers and back-office users. So I built a shared component library with design tokens, set accessibility standards for ERP and POS, and compared UI variants with A/B tests before rollout. The redesigned modules went live, and the POS module now runs in more than 10 client deployments.' },
+  { title: 'UX/UI Designer', org: 'Sumato Solutions', dates: 'June 2024 – May 2025', place: 'Pakistan', desc: 'I designed the POS module and redesigned eight ERP areas, working in Scrum sprints with a product manager, three developers and two QA testers. Busy screens slowed down cashiers and back-office users. So I built a shared component library with design tokens, set accessibility standards for ERP and POS, and compared UI variants with A/B tests before rollout. The redesigned modules went live, and the POS module now runs in more than 10 client deployments.' },
   { title: 'UX/UI Designer', org: 'D2Soft Intellicence', dates: 'January 2024 – June 2024', place: 'Pakistan', desc: 'I designed five modules of Belsio, a proptech platform for the Middle East real-estate market: dashboards for property, CRM, finance, HR and procurement. The product had to work on web and mobile, so I started with user flows and wireframes, then created the Belsio design system before the high-fidelity UI. This gave the team one consistent design language across both platforms and a smoother handoff to developers.' },
   { title: 'UX/UI Design Intern', org: 'Mashkraft', dates: 'October 2023 – January 2024', place: 'Pakistan', desc: 'I designed web and mobile app screens for caregivers and their families, plus flyers, posters and social media graphics. The brand needed a consistent look across all channels, so I created reusable templates and followed the corporate design in Photoshop, Illustrator and InDesign. In total I delivered more than 50 brand-consistent web and social media assets.' }
 ];

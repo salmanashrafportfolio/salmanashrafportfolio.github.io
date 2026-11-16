@@ -746,3 +746,6 @@ html,body{overflow-x:clip}
   .cert-track,.travel-track{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);will-change:transform}
   .cert-track .cert,.travel-track figure{-webkit-transform:translateZ(0);transform:translateZ(0)}
 }
+
+/* Dirty Dozen cover: show the whole course image so the title is not cropped */
+.detail-top.has-cover .header-cover img[src*="dd_header"]{height:auto;aspect-ratio:auto;object-fit:contain;background:#ffffff}

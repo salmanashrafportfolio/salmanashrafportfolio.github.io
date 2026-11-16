@@ -96,7 +96,7 @@ export const deLabels = {
 };
 
 export const deDescriptions = {
-  sumato: 'Ein POS-Modul gestaltet, das in mehr als 10 Kundenumgebungen im Einsatz ist, fünf datenintensive ERP-Module überarbeitet und wiederverwendbare Komponenten für Konsistenz und Zusammenarbeit im gesamten Produkt aufgebaut.',
+  sumato: 'Ein POS-Modul gestaltet, das in mehr als 10 Kundenumgebungen im Einsatz ist, acht ERP-Bereiche überarbeitet und wiederverwendbare Komponenten für Konsistenz und Zusammenarbeit im gesamten Produkt aufgebaut.',
   ar: 'Ein Augmented-Reality-Erlebnis für Besucher von Weihnachtsmärkten gestaltet – mit Sprachsuche, blickbasierter Navigation und Übersetzung, erarbeitet durch Feldforschung und Usability-Tests.',
   muq: 'Die Oberfläche der Companion-App für einen BLE-fähigen Smart Mug gestaltet und ein wiederverwendbares Designsystem mit Design-Tokens und Komponenten dokumentiert.',
   elearning: 'Einen 15-minütigen digitalen Lernkurs über menschliche Faktoren in der Instandhaltung gestaltet und entwickelt und das Erlebnis mithilfe von Reviewer-Feedback verbessert.',
