@@ -17,6 +17,7 @@ const strip = (s) => String(s).replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
 
 function pageFor(route) {
   if (route.kind === 'work') return { path: '/work', title: 'Selected work | Salman Bhatti', desc: 'Selected UX/UI projects by Salman Bhatti: enterprise ERP, AR, IoT, e-learning and websites.' };
+  if (route.kind === 'meet') return { path: '/meet', title: 'Meet Salman | Salman Bhatti', desc: 'Ask questions about Salman Bhatti, UX/UI Designer: his projects, experience, studies and skills.', image: SITE + '/salman-paris.webp', imageAlt: 'Salman Bhatti' };
   if (route.kind === 'about') return { path: '/about', title: 'About | Salman Bhatti', desc: 'Muhammad Salman Bhatti, UX/UI Designer based in Germany. Enterprise UX/UI, user research, design systems, and AR and IoT prototypes.' };
   const p = route.project;
   const hero = p.hero ? SITE + p.hero[0] : SITE + '/og-image.png';
@@ -52,6 +53,7 @@ function withMeta(page) {
 const routes = [
   { kind: 'work' },
   { kind: 'about' },
+  { kind: 'meet' },
   ...projects.map((project) => ({ kind: 'project', project })),
 ];
 
