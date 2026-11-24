@@ -394,7 +394,6 @@ function Hero({ setPage }) {
       <p className="sr-only">{lang === 'de' ? 'Ausgesprochen: zahl-mahn.' : 'Pronounced zahl-mahn, in German.'}</p>
       <div className="hero-actions">
         <button className="pill-link" onClick={() => setPage('work')}>{t.seeWork} <ArrowUpRight size={17}/></button>
-        <a className="pill-link secondary" href={CV_URL} target="_blank" rel="noopener noreferrer">{t.cv} <Download size={17}/></a>
       </div>
       
     </div>
