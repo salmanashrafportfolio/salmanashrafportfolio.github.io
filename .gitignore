@@ -2,3 +2,12 @@ node_modules/
 dist/
 _unused-public/
 .vercel
+_to_delete/
+
+# originals / unused copies, kept locally but not published
+public/Application Photo.JPG
+public/about-portrait.jpg
+public/projects/muq_cover.png
+public/projects/Connected Coffee Companion App.png
+public/projects/eden -1.jpeg
+public/projects/eden -2.jpeg

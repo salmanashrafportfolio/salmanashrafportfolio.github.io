@@ -24,12 +24,12 @@ export const projects = [
     lede: 'Sumato ERP is a cloud-based enterprise resource planning platform for small and medium-sized businesses. I worked as the sole UX/UI designer, improving the usability of existing ERP modules and designing a new point-of-sale (POS) experience.',
     tags: ['Enterprise UX/UI', 'Web Application', 'Design Systems'],
     live: ['https://sumatoerp.com/', 'sumatoerp.com'],
-    meta: [['My role', 'UX/UI Designer'], ['Team', 'Product manager, 3 developers, 2 QA testers'], ['Timeline', 'Jun 2024 – May 2025'], ['Tools', 'Figma, Jira, Azure DevOps']],
+    meta: [['My role', 'UX/UI Designer'], ['Team', 'Product manager, 3 developers, 2 QA testers'], ['Timeline', 'Jun 2024 – May 2025'], ['Tools', 'Figma, Azure DevOps']],
     headerImage: true,
     hero: [img('pos.webp'), 'Point of Sale screen', '**Point of Sale.** Category tabs with item counts, availability on every item, and a persistent order summary that ends in one primary action.'],
     story: [
       ['The challenge', 'Dense dashboards hid important business information, similar actions behaved differently across modules, non-technical users needed simpler workflows, and clients lacked a dedicated POS for counter sales.'],
-      ['What I did', 'Met Sumato’s clients, analysed the live ERP screens, and designed a POS built for quick order entry, a clearer dashboard hierarchy and shared interaction patterns across modules.'],
+      ['What I did', 'Joined client meetings led by the product manager to understand their daily operations and POS requirements, analysed the live ERP screens, and designed a POS built for quick order entry, a clearer dashboard hierarchy and shared interaction patterns across modules.'],
       ['Result', 'The POS was deployed to 10+ client businesses, 8 ERP areas were redesigned and implemented in the live product, and ERP and POS share one design system.']
     ],
     impact: [['10+', 'client deployments: the new POS module was deployed to more than ten client businesses'], ['8', 'ERP areas redesigned and implemented in the live product'], ['1', 'shared design system: a component library, design tokens and consistent interaction patterns across ERP and POS']],
@@ -37,7 +37,7 @@ export const projects = [
       { title: 'Research & discovery', blocks: [
         sub('What I did'),
         list([
-          '**Client discussions:** I met with clients to understand their daily operations, workflow requirements and expectations for a POS system.',
+          '**Client discussions:** Joined client meetings led by the product manager to understand their daily operations and POS requirements.',
           '**Existing interface analysis:** I reviewed the ERP dashboard and record-management modules to identify inconsistencies in layout, navigation and interaction patterns.'
         ]),
         sub('Key findings'),
@@ -90,7 +90,7 @@ export const projects = [
         quote('Design principle: make important actions easy to find, keep relevant information visible, and reuse familiar patterns wherever possible.'),
         sub('Key interaction decisions'),
         list(['**Large tap targets** and one-tap “Add to Cart” for the counter', '**Unavailable items greyed out,** so errors are prevented, not reported', '**Destructive actions** always ask for confirmation in red']),
-        sub('Accessibility standards I set'),
+        sub('Accessibility rules I defined'),
         list(['Contrast and readability rules for text and status colours', 'Minimum touch-target size for the POS', 'Every module follows the same rules'])
       ] },
       { title: 'Final UI: Point of Sale', blocks: [
@@ -104,7 +104,7 @@ export const projects = [
       { title: 'Dashboard: summary before detail', blocks: [
         figs(2, [['dashboard.webp', 'Sales overview dashboard', '**Sales Overview.** KPI cards with 30-day trends, followed by charts for detail, so managers see the state of the business at a glance.']]),
         sub('How I worked and validated'),
-        table(null, [['Design reviews', 'I evaluated UI variants through design reviews with the product manager and developers.'], ['Accessibility', 'Shared standards for contrast, touch-target size and readability, so every module followed the same rules.'], ['Team & delivery', 'Scrum sprints with a product manager, 3 developers and 2 QA testers, from design reviews to developer handoff.']])
+        table(null, [['Design reviews', 'I evaluated UI variants through design reviews with the product manager and developers.'], ['A/B tests', 'Compared UI variants with users before rollout and chose the clearer one.'], ['Accessibility', 'Shared rules for contrast, touch-target size and readability, so every module followed the same rules.'], ['Team & delivery', 'Scrum sprints with a product manager, 3 developers and 2 QA testers, from design reviews to developer handoff.']])
       ] },
       { title: 'Reusable patterns: the shared flows of every record module', blocks: [
         figs(3, [
@@ -124,6 +124,7 @@ export const projects = [
       { title: 'Validation', blocks: [
         list([
           '**Design reviews:** I evaluated UI variants through design reviews with the product manager and developers.',
+          '**A/B tests:** compared UI variants with users before rollout and chose the clearer one.',
           '**QA:** I collaborated with QA testers during implementation.'
         ])
       ] },
@@ -261,7 +262,7 @@ export const projects = [
       ['Tools', 'Figma, Claude via Figma MCP, BLE'],
       ['Outcome', 'A working connected-mug prototype and Android companion application, demonstrated live with the founders.']
     ],
-    hero: [img('muq_render.webp'), 'Render of the muq. smart mug', '**The muq. cup** (render by the muq. founders).'],
+    hero: [img('muq_cover.webp'), 'Cover of the muq. connected coffee companion app, showing the device search screen', '**Designing a connected coffee companion app.** The app searches for nearby muq. devices and pairs them over Bluetooth.'],
     headerImage: true,
     sections: [
       { title: 'Making Device Interactions Simple and Understandable', blocks: [
@@ -311,9 +312,9 @@ export const projects = [
           para('These changes were informed by stakeholder feedback and design review. Their usability benefits have not yet been formally evaluated.')
       ] },
       { title: 'Building a Maintainable Design System', blocks: [
-        link('https://www.figma.com/design/M9WuO1kKemiRyL1h4tGdJ3/MUQ.?node-id=262-122', 'Design System page in Figma'),
         para('To support consistency across the application, I developed a reusable Figma design system with **primitive and semantic tokens, components, and documented variants.**'),
         para('The system separates raw design values from their functional meaning, making interface styling more consistent and easier to maintain.'),
+        link('https://www.figma.com/design/M9WuO1kKemiRyL1h4tGdJ3/MUQ.?node-id=262-122', 'Design System page in Figma'),
         sub('Design system deliverables'),
         stats([['29', 'Semantic tokens'], ['12', 'Typography styles'], ['5', 'Components'], ['7', 'Issues corrected']]),
         figs(2, [
@@ -369,11 +370,10 @@ export const projects = [
     live: ['https://dirty-dozen-hf-course.netlify.app/', 'dirty-dozen-hf-course.netlify.app'],
     hero: [img('dd_header.webp'), 'Live course cover: The Dirty Dozen, Human Factors in Maintenance', '**The live course:** the cover of the published Rise 360 course.'],
     meta: [
-      ['My role', 'UX/UI Designer & e-learning developer (solo)'],
+      ['My role', 'UX/UI Designer & e-learning developer'],
       ['Audience', 'B1/B2 aircraft maintenance technicians, recurrent training'],
       ['Format', '6 lessons, about 15 minutes, graded quiz'],
-      ['Timeline', 'November 2026 · Personal project'],
-      ['Team', 'Solo (me)'],
+      ['Timeline', 'November 2026'],
       ['Tools', 'Articulate Rise 360, Review 360, Claude'],
       ['Status', 'Published, version 2 after reviewer feedback']
     ],
@@ -495,8 +495,9 @@ export const projects = [
     meta: [],
     hero: [img('websites_cover.webp'), 'Website UI Design Collection: six responsive websites for electrical, services, ERP, SaaS and construction clients'],
     sections: [
-      { title: 'All In One Electric', text: 'Freelance project, designed alone.', blocks: [
-        facts([['Role', 'UX/UI Designer'], ['Timeline', 'October 2024'], ['Team', 'Freelance client, designed alone'], ['Tools', 'Figma']]),
+      { title: 'All In One Electric', text: 'Freelance redesign of the website for an electrical contractor in the Dallas area (Richardson, Texas), covering the home page, services, EV charging and company background. Focus: clear service presentation, trust and a consistent visual style.', blocks: [
+        facts([['Role', 'UX/UI Designer'], ['Timeline', 'October 2024'], ['Team', 'Freelance client'], ['Tools', 'Figma']]),
+        link('https://www.allinoneelectric.com/', 'allinoneelectric.com'),
         figs(2, [
           ['aio_home.webp', 'All In One Electric home page, full length', 'Home'],
           ['aio_about.webp', 'All In One Electric about page, full length', 'About'],
@@ -506,6 +507,7 @@ export const projects = [
       ] },
       { title: 'Beehive', text: 'Designed responsive marketing pages and interfaces for a home-services platform, including customer and admin views for job posting and proposal comparison. Focus: responsive UI, service discovery and workflow design.', blocks: [
         facts([['Role', 'UX/UI Designer'], ['Timeline', '2024'], ['Team', 'Sumato Solutions, with another UX/UI Designer'], ['Tools', 'Figma, Miro, Adobe Photoshop, Adobe Illustrator, Azure DevOps']]),
+        link('https://beehivepros.com/', 'beehivepros.com'),
         figs(3, [
           ['bee_home.webp', 'Beehive home page, full length', 'Home'],
           ['bee_services.webp', 'Beehive services page, full length', 'Our Services'],
@@ -515,7 +517,7 @@ export const projects = [
           ['bee_contact.webp', 'Beehive contact page, full length', 'Contact']
         ], false, true)
       ] },
-      { title: 'Rememball', text: 'Safety compliance platform.', blocks: [
+      { title: 'Rememball', text: 'Designed the marketing website for Rememball, a safety compliance platform, with pages that explain the product, compare pricing plans and make it easy to get in touch. Focus: explaining a compliance product simply, pricing clarity and clear calls to action.', blocks: [
         facts([['Role', 'UX/UI Designer'], ['Timeline', '2024'], ['Team', 'Sumato Solutions, with another UX/UI Designer'], ['Tools', 'Figma, Miro, Adobe Photoshop, Adobe Illustrator, Azure DevOps']]),
         link('https://www.rememball.com/', 'rememball.com'),
         figs(3, [
@@ -525,7 +527,7 @@ export const projects = [
           ['rem_contact.webp', 'Rememball contact page, full length', 'Contact']
         ], false, true)
       ] },
-      { title: 'RoGe Build', text: 'Construction & solar.', blocks: [
+      { title: 'RoGe Build', text: 'Designed the website for RoGe Build, a construction and solar company, with service pages, a project portfolio and gallery, job detail pages and a contact page. Focus: showcasing completed work, a clear service structure and visual consistency.', blocks: [
         facts([['Role', 'UX/UI Designer'], ['Timeline', '2024'], ['Team', 'Sumato Solutions, with another UX/UI Designer'], ['Tools', 'Figma, Miro, Adobe Photoshop, Adobe Illustrator, Azure DevOps']]),
         figs(3, [
           ['roge_home.webp', 'RoGe Build home page, full length', 'Home'],
@@ -537,7 +539,7 @@ export const projects = [
           ['roge_contact.webp', 'RoGe Build contact page, full length', 'Contact']
         ], false, true)
       ] },
-      { title: 'Sumato Solutions', text: 'Company website.', blocks: [
+      { title: 'Sumato Solutions', text: 'Designed the company website for Sumato Solutions, presenting the company and its ERP product, with a careers section that includes job overviews and an application flow. Focus: company presentation, an easy recruiting flow and consistency with the new brand style.', blocks: [
         facts([['Role', 'UX/UI Designer'], ['Timeline', '2024'], ['Team', 'Sumato Solutions, with another UX/UI Designer'], ['Tools', 'Figma, Miro, Adobe Photoshop, Adobe Illustrator, Azure DevOps']]),
         link('https://sumatosolutions.com/', 'sumatosolutions.com'),
         figs(3, [
@@ -565,94 +567,43 @@ export const projects = [
   {
     id: 'eden', number: '06', name: 'EDEN Terrarium',
     title: 'EDEN: a smart dual-zone terrarium that people trust',
-    description: 'Led the evaluation, video and documentation for EDEN, a smart dual-zone terrarium. A study with two users showed 4.1/5 trust in its sensing and led to zone-level alerts.',
-    lede: 'EDEN is a smart dual-zone terrarium that monitors two zones and sends alerts when conditions need attention. In a team of five, I led the evaluation, video and documentation to test whether non-experts trust the terrarium’s alerts and act on them.',
+    description: 'Designed the web dashboard and led the evaluation, video and documentation for EDEN, a smart dual-zone terrarium. A study with two users showed 4.1/5 trust in its sensing and led to zone-level alerts.',
+    lede: 'EDEN is a smart dual-zone terrarium that monitors two zones and sends alerts when conditions need attention. In a team of five, we built the hardware prototype together, and I designed the web dashboard and led the evaluation, video and documentation to test whether non-experts trust the terrarium’s alerts and act on them.',
     tags: ['Evaluation', 'User Research', 'IoT'],
     live: ['https://eden-terrarium.vercel.app/', 'eden-terrarium.vercel.app'],
+    links: [['https://github.com/msalmanbhatti/eden-terrarium', 'GitHub']],
     headerImage: true,
-    hero: [img('eden_dash_home.webp'), 'EDEN dashboard, home view', '**The EDEN dashboard:** the home view of the terrarium monitor.'],
+    hero: [img('eden_dash_full.webp'), 'EDEN dashboard home view with health score, humidity, soil moisture, reservoir level and 30-minute trends', '**The EDEN dashboard:** health, humidity, soil and reservoir at a glance, with trends from the last 30 minutes.'],
     meta: [
-      ['My role', 'Evaluation lead, video & documentation'],
+      ['My role', 'Dashboard UI design, evaluation lead, video & documentation; hardware prototype with the team'],
       ['Team', 'Team of 5'],
       ['Timeline', 'April 2026 – June 2026'],
       ['Type', 'Academic project']
     ],
     sections: [
+      { title: 'Dashboard design', text: 'I designed the web dashboard that shows the terrarium’s state at a glance: a 0–100 plant mood score on the home view, a zone view for each of the two zones, and trends over time for temperature, humidity and soil moisture.', blocks: [
+        figs(3, [
+          ['eden_dash_home.webp', 'EDEN dashboard, home view', '**Home.** The plant mood score out of 100, with humidity and soil moisture.'],
+          ['eden_dash_trends.webp', 'EDEN dashboard, trends view', '**Trends.** Temperature, humidity and light over the last 30 minutes.'],
+          ['eden_dash_env.webp', 'EDEN dashboard, zones and environment view', '**Zones & environment.** Soil moisture for each zone, plus the current room readings.'],
+          ['eden_dash_zones.webp', 'EDEN dashboard, reservoir and watering zones view', '**Reservoir & zones.** Water level in the reservoir and the two watering zones.']
+        ], true)
+      ] },
       { title: 'Evaluation', text: 'The question was simple: do non-experts trust the terrarium’s alerts, and do they act on them?', blocks: [
         stats([['2', 'users in the study'], ['4.1/5', 'sensing trust'], ['6/6', 'soil readings correct']]),
         para('Participants rated how much they trusted the sensing and checked the soil readings against the reference values. The findings led to **zone-level alerts**, so users can see which zone needs attention.')
       ] },
-      { title: 'Dashboard', blocks: [
+      { title: 'Hardware prototype', text: 'As a team, we built a working prototype: a glass terrarium with two planting zones, sensors and watering hardware run by ESP32 boards, connected live to the web dashboard.', blocks: [
         figs(2, [
-          ['eden_dash_zones.webp', 'EDEN dashboard, zones view', 'Zones'],
-          ['eden_architecture.webp', 'EDEN system architecture', 'Architecture']
+          ['eden_prototype.webp', 'The EDEN prototype: a glass terrarium with sensors and wiring, next to a laptop showing the live dashboard', '**The working prototype,** connected to the live dashboard.'],
+          ['eden_demo_table.webp', 'Team 17 demo table with the EDEN terrarium, laptops and project poster at Saarland University', '**Our demo table (#17)** at Saarland University.']
+        ], false, false, true)
+      ] },
+      { title: 'System architecture', blocks: [
+        figs(1, [
+          ['eden_architecture.webp', 'EDEN system architecture', 'How the sensors, hardware and web dashboard connect.']
         ])
       ] }
-    ]
-  },
-  {
-    id: 'pipeline', number: '07', name: 'Data Quality Pipeline',
-    title: 'Product Data Quality Pipeline: clean data for Power BI',
-    description: 'A Python pipeline that validates records against 14 rules and removes duplicates, so Power BI reports run on clean product data. Tested with pytest against ground truth.',
-    lede: 'A Python pipeline that checks and cleans a product dataset of 2,496 records before it reaches Power BI. It validates each record against 14 rules, removes duplicates, and is tested with pytest against known, injected errors.',
-    tags: ['Python', 'Data Quality', 'Testing'],
-    coverLabel: 'PYTHON · DATA',
-    links: [['https://github.com/msalmanbhatti/product-data-quality', 'GitHub repository']],
-    meta: [
-      ['My role', 'Built and tested the pipeline'],
-      ['Timeline', 'October 2026'],
-      ['Tools', 'Python, pandas, pytest, Power BI']
-    ],
-    impact: [['2,496', 'records validated and deduplicated'], ['14', 'validation rules'], ['94.9%', 'of injected errors found']],
-    sections: [
-      { title: 'Validation & cleaning', blocks: [
-        para('Power BI reports are only as good as their data. The pipeline runs every record through **14 validation rules**, then removes duplicates so each product appears once.')
-      ] },
-      { title: 'Testing', text: 'The pipeline was tested against a ground-truth set with known errors.', blocks: [
-        stats([['94.9%', 'of injected errors found'], ['100%', 'duplicate precision']])
-      ] }
-    ]
-  },
-  {
-    id: 'applyd', number: '08', name: 'Applyd',
-    title: 'Applyd: a job application tracker with a Kanban board',
-    description: 'A full-stack job application tracker with a drag-and-drop Kanban board, so each application’s stage is visible at a glance.',
-    lede: 'Applyd is a job application tracker built end to end with Next.js, TypeScript and Supabase. Applications move across a drag-and-drop Kanban board so each stage is visible at a glance, and Row Level Security keeps each user’s data private.',
-    tags: ['Full-stack', 'UX Design', 'Next.js'],
-    coverLabel: 'FULL-STACK',
-    links: [['https://github.com/msalmanbhatti/application-tracker', 'GitHub repository']],
-    meta: [
-      ['My role', 'Designer & developer'],
-      ['Timeline', 'October 2026'],
-      ['Tools', 'Next.js, TypeScript, Supabase']
-    ],
-    sections: [
-      { title: 'Design', text: 'Job searches involve many applications at different stages. The board makes the current stage of each one visible without opening it.', blocks: [
-        list(['A drag-and-drop Kanban board: move an application to its next stage', 'Stage visible at a glance across all applications'])
-      ] },
-      { title: 'Build', blocks: [
-        list(['Full-stack app with Next.js and TypeScript', 'Supabase backend with **Row Level Security**, so each user sees only their own applications'])
-      ] }
-    ]
-  },
-  {
-    id: 'designcrafters', number: '09', name: 'Design Crafters',
-    title: 'Design Crafters: a freelance marketplace for creatives',
-    description: 'Bachelor thesis: designed the complete front end of a MERN freelance marketplace where creatives find clients, verified with unit tests.',
-    lede: 'Design Crafters is a freelance marketplace where creatives find clients. For my bachelor thesis, I designed the complete front end in a team of two and built it on the MERN stack, verifying sign-up, gigs and orders with unit tests before integration.',
-    tags: ['Bachelor Thesis', 'UI Design', 'MERN'],
-    coverLabel: 'BACHELOR THESIS',
-    meta: [
-      ['My role', 'Front-end design & development'],
-      ['Team', 'Team of 2'],
-      ['Timeline', 'November 2023'],
-      ['Stack', 'MongoDB, Express.js, React.js, Node.js']
-    ],
-    sections: [
-      { title: 'Front end', blocks: [
-        list(['Complete front end of the marketplace, designed and built', 'Bootstrap, HTML/CSS and React.js for the interface'])
-      ] },
-      { title: 'Testing', text: 'Sign-up, gigs and orders were verified with unit tests before the front end was integrated with the back end.', blocks: [] }
     ]
   }
 ];
@@ -666,18 +617,17 @@ export const testimonials = [
 ];
 
 export const experience = [
-  { title: 'UX/UI Designer', org: 'Sumato Solutions', dates: 'June 2024 – May 2025', place: 'Pakistan', desc: 'I designed the POS module and redesigned eight ERP areas, working in Scrum sprints with a product manager, three developers and two QA testers. Busy screens slowed down cashiers and back-office users. So I built a shared component library with design tokens, set accessibility standards for ERP and POS, and compared UI variants with A/B tests before rollout. The redesigned modules went live, and the POS module now runs in more than 10 client deployments.' },
-  { title: 'UX/UI Designer', org: 'D2Soft Intellicence', dates: 'January 2024 – June 2024', place: 'Pakistan', desc: 'I designed five modules of Belsio, a proptech platform for the Middle East real-estate market: dashboards for property, CRM, finance, HR and procurement. The product had to work on web and mobile, so I started with user flows and wireframes, then created the Belsio design system before the high-fidelity UI. This gave the team one consistent design language across both platforms and a smoother handoff to developers.' },
-  { title: 'UX/UI Design Intern', org: 'Mashkraft', dates: 'October 2023 – January 2024', place: 'Pakistan', desc: 'I designed web and mobile app screens for caregivers and their families, plus flyers, posters and social media graphics. The brand needed a consistent look across all channels, so I created reusable templates and followed the corporate design in Photoshop, Illustrator and InDesign. In total I delivered more than 50 brand-consistent web and social media assets.' }
+  { title: 'UX/UI Designer', org: 'Sumato Solutions', dates: 'June 2024 – May 2025', place: 'Pakistan', desc: 'Defined accessible colour contrast in the component library.' },
+  { title: 'UX/UI Designer', org: 'D2Soft Intelligence', dates: 'January 2024 – June 2024', place: 'Pakistan' },
+  { title: 'UX/UI Design Intern', org: 'Mashkraft', dates: 'October 2023 – January 2024', place: 'Pakistan' }
 ];
 
 export const education = [
   { title: 'M.Sc. Media Informatics', org: 'Universität des Saarlandes', dates: 'Apr 2025 – Present', place: 'Germany', points: [
-    'Relevant coursework: Human-Computer Interaction, Living “AI-ducation” Dashboard (data visualization), Media Art & Design Project, Designing Human Oversight of AI for “Good Work” (seminar), From Research Ideas to Empirical Study Designs in Human–AI Interaction (research seminar).'
+    'Relevant coursework: Human-Computer Interaction, Living “AI-ducation” Dashboard (data visualization), Media Art & Design Project, Generative Arts and Design Lab.'
   ] },
-  { title: 'B.Sc. Computer Science', org: 'GC University', dates: 'Oct 2019 – Dec 2023', place: 'Lahore', points: [
-    'Relevant coursework: Software Engineering, Advanced Software Engineering, Software Development Process, Artificial Intelligence & Neural Networks, Probability & Statistics, Database Systems, Communication & Presentation Skills, Technical & Business Writing.'
-  ] }
+  { title: 'B.Sc. Computer Science', org: 'GC University', dates: 'Oct 2019 – Dec 2023', place: 'Lahore'
+  }
 ];
 
 export const certificates = [
@@ -686,30 +636,16 @@ export const certificates = [
   { title: 'FAB Spark Fellowship', issuer: 'FAB', date: 'Jun 2026', file: 'fab-spark-fellowship.webp' },
   { title: 'Social Media Manager', issuer: 'Pakistan Student Association Saarland', date: '2025–2026', file: 'psa-social-media-manager.webp' },
   { title: 'Co-Curricular Certificate of Distinction', issuer: 'GC University Lahore, Computer Science Society', date: '2023', file: 'gcu-cs-society-distinction.webp' },
-  { title: 'A Thousand Rays of Light: Assistant Director', issuer: 'GC University Lahore & Khayaali Production', date: '2023', file: 'thousand-rays-of-light.webp' },
-  { title: 'The Last Follower x Harry Potter Festival Year 2: Appreciation', issuer: 'GC University Lahore', date: '2023', file: 'gcu-festival-appreciation.webp' },
-  { title: 'The Last Follower x Harry Potter Festival: Senior Ambassador', issuer: 'Khayaali Production', date: 'Nov 2022', file: 'festival-senior-ambassador.webp' },
-  { title: 'The Last Follower x Harry Potter Festival: Event / Booth Manager', issuer: 'Khayaali Production', date: 'Nov – Dec 2021', file: 'festival-event-manager.webp' },
-  { title: 'The Last Follower and the Resurrection of Voldemort: Volunteer / Actor', issuer: 'Khayaali Production', date: 'Dec 2020 – Feb 2021', file: 'last-follower-volunteer.webp' }
 ];
 
 export const skills = [
-  ['UX Research', 'research', [['User Interviews', 'icon:interviews'], ['Field Observations', 'icon:observe'], ['Usability Testing', 'icon:usability'], ['Think-Aloud', 'icon:thinkaloud'], ['A/B Testing', 'icon:ab'], ['NASA-TLX', 'icon:workload']]],
-  ['UI & Interaction Design', 'ui', [['User Flows', 'icon:workflow'], ['Wireframing', 'icon:wireframe'], ['Interactive Prototypes', 'icon:prototype'], ['Visual Design', 'icon:visual'], ['Accessibility', 'icon:a11y'], ['Design Systems', 'icon:system']]],
-  ['Design Tools', 'tools', [['Figma', 'figma.png'], ['Photoshop', 'photoshop.png'], ['Illustrator', 'illustrator.png'], ['InDesign', 'InDesign.svg'], ['Adobe XD', 'AdobeXD.svg'], ['Miro', 'Miro.svg'], ['Articulate Rise 360', 'Articulate.svg']]],
-  ['Technical Skills', 'tech', [['HTML/CSS', 'HTML5.svg'], ['JavaScript', 'JavaScript.svg'], ['TypeScript', 'TypeScript.svg'], ['React', 'React.svg'], ['Python', 'Python.svg'], ['SQL', 'icon:database'], ['Git', 'Git.svg'], ['Jira', 'Jira.png'], ['Azure DevOps', 'AzureDevOps.svg'], ['Trello', 'Trello.svg'], ['Slack', 'Slack.svg'], ['ChatGPT', 'ChatGPT.svg'], ['Claude', 'Claude.webp'], ['Claude Code', 'Claude.webp'], ['Figma MCP', 'figma.png'], ['Midjourney', 'Midjourney.svg'], ['AI-Assisted Design Workflows', 'icon:ai']]]
+  ['UX Research', 'research', [['User Interviews', 'icon:interviews'], ['Field Observations', 'icon:observe'], ['Usability Testing', 'icon:usability'], ['Think-Aloud', 'icon:thinkaloud'], ['A/B Testing', 'icon:ab'], ['NASA-TLX', 'icon:workload'], ['Wizard-of-Oz', 'icon:observe'], ['Competitor Analysis', 'icon:competitor']]],
+  ['UI & Interaction Design', 'ui', [['User Flows', 'icon:workflow'], ['Wireframing', 'icon:wireframe'], ['Interactive Prototypes', 'icon:prototype'], ['Visual Design', 'icon:visual'], ['Accessibility', 'icon:a11y'], ['Design Systems', 'icon:system'], ['Design Tokens', 'icon:tokens'], ['Data Visualization', 'icon:dataviz'], ['Responsive Design', 'icon:responsive']]],
+  ['Design Tools', 'tools', [['Figma', 'figma.png'], ['Photoshop', 'photoshop.png'], ['Illustrator', 'illustrator.png'], ['InDesign', 'InDesign.svg'], ['Miro', 'Miro.svg'], ['Articulate Rise 360', 'Articulate.svg'], ['ProtoPie', 'protopie.png']]],
+  ['Technical Skills', 'tech', [['HTML/CSS', 'HTML5.svg'], ['JavaScript', 'JavaScript.svg'], ['React', 'React.svg'], ['Git', 'Git.svg'], ['Jira', 'Jira.png'], ['Azure DevOps', 'AzureDevOps.svg'], ['Claude Code', 'Claude.webp'], ['Figma MCP', 'figma.png'], ['Confluence', 'Confluence.png'], ['Power BI', 'icon:chart'], ['Power Automate', 'icon:workflow']]]
 ];
 
-export const toolkit = [
-  ['Design', [['Figma', 'figma.png'], ['Adobe Photoshop', 'photoshop.png'], ['Adobe Illustrator', 'illustrator.png'], ['Adobe XD', 'AdobeXD.svg'], ['Adobe InDesign', 'InDesign.svg']]],
-  ['Prototyping, No-code & E-Learning', [['ProtoPie', 'protopie.png'], ['Framer', 'framer.svg'], ['Webflow', 'Webflow.webp'], ['Bubble', 'bubble.png'], ['Articulate Rise 360', 'Articulate.svg']]],
-  ['Frontend & Mobile', [['React', 'React.svg'], ['Next.js', 'Nextjs.svg'], ['TypeScript', 'TypeScript.svg'], ['JavaScript (ES6)', 'JavaScript.svg'], ['HTML5', 'HTML5.svg'], ['CSS3', 'CSS3.svg'], ['Tailwind CSS', 'Tailwind.svg'], ['Kotlin (Android)', 'Kotlin.svg'], ['Git', 'icon:git']]],
-  ['Data & Analytics', [['Python (pandas, pytest)', 'Python.svg'], ['SQL', 'icon:database'], ['Power BI', 'icon:chart'], ['Tableau', 'Tableau.svg'], ['Excel (advanced)', 'icon:sheet'], ['Power Automate', 'icon:workflow']]],
-  ['Planning & Productivity', [['Notion', 'Notion.png'], ['Jira', 'Jira.png'], ['Confluence', 'Confluence.png'], ['Miro', 'Miro.svg'], ['PowerPoint', 'icon:slides']]],
-  ['Artificial Intelligence', [['Codex', 'Codex.webp'], ['Claude Code', 'Claude.webp'], ['Figma MCP', 'figma.png'], ['ChatGPT', 'icon:chat'], ['Midjourney', 'Midjourney.svg'], ['Cursor', 'Software.jfif']]]
-];
-
-export const methods = ['User interviews', 'Personas', 'Journey mapping', 'Usability testing', 'Wizard-of-Oz testing', 'Heuristic evaluation', 'SUS', 'NASA-TLX', 'Information architecture', 'Accessibility standards', 'Human-centred design', 'Literature reviews'];
+export const methods = ['User interviews', 'Field observations', 'Personas', 'Usability testing', 'Think-aloud', 'Wizard-of-Oz testing', 'A/B testing', 'NASA-TLX', 'Information architecture', 'Human-centred design'];
 
 export const languages = ['English (fluent)', 'German (A2, currently learning)', 'Urdu (native)'];
 

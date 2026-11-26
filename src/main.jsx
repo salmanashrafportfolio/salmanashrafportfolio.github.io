@@ -1,14 +1,15 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Asterisk, Download, Instagram, Linkedin, Mail, Github, Copy, Check, Menu, X, Sparkles, GraduationCap, GitBranch, Database, BarChart3, Sheet, Workflow, Presentation, MessageSquare, ScanEye, Figma, Wrench, CodeXml, MessagesSquare, Eye, MousePointerClick, Speech, Split, Gauge, LayoutTemplate, MousePointer2, Palette, Accessibility, Component, Cloud, Kanban, Hash } from 'lucide-react';
+import HomeSidebar from './components/HomeSidebar/HomeSidebar';
+import SpotlightCard from './components/SpotlightCard/SpotlightCard';
+import './components/SpotlightCard/SpotlightCard.css';
+import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Asterisk, Instagram, Linkedin, Mail, Github, Copy, Check, Menu, X, Sparkles, GraduationCap, GitBranch, Database, BarChart3, Sheet, Workflow, Presentation, MessageSquare, ScanEye, Figma, Wrench, CodeXml, MessagesSquare, Eye, MousePointerClick, Speech, Split, Gauge, LayoutTemplate, MousePointer2, Palette, Accessibility, Component, Cloud, Kanban, Hash, Telescope, Layers, ChartPie, MonitorSmartphone, Play, Pause, Globe, CalendarDays } from 'lucide-react';
 import { projects, testimonials, experience, education, certificates, skills, places, clips } from './projects';
-import { strings, deLabels, deDescriptions } from './i18n';
 import './styles.css';
 
 const EMAIL = 'salman.ashraff20@gmail.com';
 const LINKEDIN = 'https://www.linkedin.com/in/m-salman-bhatti';
 const INSTAGRAM = 'https://www.instagram.com/salmancapturedthis/';
-const CV_URL = '/Muhammad_Salman_Bhatti_CV.pdf';
 const GITHUB = 'https://github.com/msalmanbhatti';
 const routes = ['home', 'work', 'about', ...projects.map(p => p.id)];
 // Real addresses: / , /work , /about , /work/<project>
@@ -29,8 +30,6 @@ function pageToPath(page) {
 }
 
 const LightboxContext = createContext(() => {});
-const LangContext = createContext({ lang: 'en', t: strings.en, setLang: () => {} });
-const useLang = () => useContext(LangContext);
 
 // Mouse dragging for carousels. Touch keeps its native scrolling.
 // enableDragScroll: for containers that scroll sideways (overflow-x).
@@ -113,13 +112,11 @@ function enableMarqueeDrag(el, track, keyframes, duration) {
 }
 
 function ZoomImage({ src, alt, label, className, tall }) {
-  const { t } = useLang();
   const open = useContext(LightboxContext);
-  return <button type="button" className={className ? `zoom ${className}` : 'zoom'} onClick={() => open({ src, alt: alt || label, tall })} aria-label={`${t.enlarge}: ${alt || label}`}><img src={src} alt={alt} loading="lazy"/></button>;
+  return <button type="button" className={className ? `zoom ${className}` : 'zoom'} onClick={() => open({ src, alt: alt || label, tall })} aria-label={`${"Enlarge image"}: ${alt || label}`}><img src={src} alt={alt} loading="lazy"/></button>;
 }
 
 function Lightbox({ image, onClose }) {
-  const { t } = useLang();
   const closeRef = useRef(null);
   useEffect(() => {
     const previous = document.activeElement;
@@ -140,8 +137,10 @@ function Lightbox({ image, onClose }) {
     };
   }, [onClose]);
   return <div className={image.tall ? 'lightbox tall' : 'lightbox'} role="dialog" aria-modal="true" aria-label={image.alt} onClick={onClose}>
-    <button type="button" className="lightbox-close" ref={closeRef} onClick={onClose} aria-label={t.closeImage}><X/></button>
-    <img src={image.src} alt={image.alt} onClick={e => e.stopPropagation()}/>
+    <button type="button" className="lightbox-close" ref={closeRef} onClick={onClose} aria-label={"Close image"}><X/></button>
+    {image.video
+      ? <video src={image.src} poster={image.src.replace('.mp4', '.poster.jpg')} autoPlay loop playsInline controls aria-label={image.alt} onClick={e => e.stopPropagation()}/>
+      : <img src={image.src} alt={image.alt} onClick={e => e.stopPropagation()}/>}
   </div>;
 }
 
@@ -149,53 +148,9 @@ function Rich({ text }) {
   return text.split('**').map((part, i) => i % 2 ? <b key={i}>{part}</b> : part);
 }
 
-const NAV = [['sec-work', 'work'], ['sec-about', 'about'], ['sec-experience', 'navExp']];
-
-function Header({ setPage, goSection }) {
-  const { t } = useLang();
-  const go = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const ref = useRef(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-  // Escape closes the mobile menu
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [menuOpen]);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const set = () => document.documentElement.style.setProperty('--header-space', `${el.offsetHeight + parseFloat(getComputedStyle(el).marginTop)}px`);
-    set(); const ro = new ResizeObserver(set); ro.observe(el); window.addEventListener('resize', set);
-    return () => { ro.disconnect(); window.removeEventListener('resize', set); };
-  }, []);
-  // once the navbar has moved past the hero, it turns accent with light text
-  useEffect(() => {
-    const header = ref.current; if (!header) return;
-    const update = () => {
-      const hero = document.querySelector('.hero');
-      const h = header.getBoundingClientRect();
-      const r = hero ? hero.getBoundingClientRect() : null;
-      header.classList.toggle('past-hero', !!r && r.bottom <= h.bottom);
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    return () => { window.removeEventListener('scroll', update); window.removeEventListener('resize', update); };
-  });
-  return <header className={menuOpen ? 'header menu-open' : 'header'} ref={ref}>
-    <button className="brand" onClick={() => go('home')} aria-label={t.home}><span className="brand-text space-grotesk" aria-hidden="true">salman</span></button>
-    <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-controls="site-nav" aria-label={menuOpen ? 'Close menu' : 'Open menu'} onClick={() => setMenuOpen(o => !o)}>
-      <span className="menu-bars" aria-hidden="true"><i/><i/><i/></span>
-    </button>
-    <nav className="nav-links" id="site-nav" aria-label={t.mainNav}>
-      {NAV.map(([id, key]) => <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); setMenuOpen(false); goSection(id); }}>{t[key]}</a>)}
-    </nav>
-  </header>;
-}
+const NAV = [['sec-work', "Work"], ['sec-experience', "Experience"], ['sec-skills', "Skills"], ['sec-about', "About"]];
 
 function CopyEmailButton({ label, className, iconSize, leadIcon }) {
-  const { t } = useLang();
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL);
@@ -203,11 +158,10 @@ function CopyEmailButton({ label, className, iconSize, leadIcon }) {
       window.location.href = `mailto:${EMAIL}`;
     }
   };
-  return <button className={className} onClick={copy} aria-label={`${label}: ${EMAIL} ${t.copy}`}>{leadIcon}<span className="btn-label">{label}</span> {!leadIcon && <ArrowUpRight size={iconSize}/>}</button>;
+  return <button className={className} onClick={copy} aria-label={`${label}: ${EMAIL} ${"copy"}`}>{leadIcon}<span className="btn-label">{label}</span> {!leadIcon && <ArrowUpRight size={iconSize}/>}</button>;
 }
 
 function BackToTop() {
-  const { t } = useLang();
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const update = () => setVisible(window.scrollY > window.innerHeight / 2);
@@ -220,30 +174,26 @@ function BackToTop() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
   };
-  return <button className={visible ? 'back-top visible' : 'back-top'} onClick={toTop} aria-label={t.toTop}><ArrowUp size={20}/></button>;
+  return <button className={visible ? 'back-top visible' : 'back-top'} onClick={toTop} aria-label={"Back to top"}><ArrowUp size={20}/></button>;
 }
 
 function BackButton({ page, setPage }) {
-  const { t } = useLang();
   const back = () => {
     if (window.history.state?.depth > 0) { window.history.back(); return; }
     setPage(page === 'work' || page === 'about' ? 'home' : 'work');
   };
-  return <div className="back-bar section-pad"><button className="pill-link secondary back-link" onClick={back}><ArrowLeft size={17}/> {t.back}</button></div>;
+  return <div className="back-bar section-pad"><button className="pill-link secondary back-link" onClick={back}><ArrowLeft size={17}/> {"Back"}</button></div>;
 }
 
 function Footer() {
-  const { t } = useLang();
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try { await navigator.clipboard.writeText(EMAIL); setCopied(true); setTimeout(() => setCopied(false), 2000); }
     catch { window.location.href = `mailto:${EMAIL}`; }
   };
-  return <footer className="footer">
+  return <footer className="footer" id="contact">
     <div className="footer-top">
-      <h2>{t.footH1}<em>{t.footH2}</em></h2>
-      <p className="footer-sub">{t.footSub}</p>
-      <p className="footer-text">{t.footText}</p>
+      <h2>{"You’ve seen the work. "}<em>{"Now the interesting part."}</em></h2>
       <a className="footer-email" href={`mailto:${EMAIL}`}><Mail size={20}/>{EMAIL}</a>
       <div className="footer-actions">
         <div className="footer-social">
@@ -251,8 +201,7 @@ function Footer() {
           <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={18}/></a>
           <a href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={18}/></a>
         </div>
-        <button type="button" className="footer-btn" onClick={copy}>{copied ? <Check size={17}/> : <Copy size={17}/>}<span aria-live="polite">{copied ? t.copied : t.copyEmail}</span></button>
-        <a className="footer-btn solid" href={CV_URL} target="_blank" rel="noopener noreferrer"><Download size={17}/>{t.cvMy}</a>
+        <button type="button" className="footer-btn" onClick={copy}>{copied ? <Check size={17}/> : <Copy size={17}/>}<span aria-live="polite">{copied ? "Copied!" : "Copy email"}</span></button>
       </div>
     </div>
     <div className="footer-bottom">
@@ -316,137 +265,110 @@ void main(){
   gl_FragColor = vec4(clamp(col, 0., 1.), 1.);
 }`;
 
-function HeroSilk() {
-  const ref = useRef(null);
+function useFinePointer() {
+  const q = '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
+  const [ok, setOk] = useState(() => typeof window !== 'undefined' && !!window.matchMedia?.(q).matches);
   useEffect(() => {
-    // start after the page has painted, so the hero text is not held back
-    let stop = () => {};
-    const start = () => {
-    const canvas = ref.current;
-    const gl = canvas && canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
-    if (!gl) return; // no WebGL: the hero's static texture stays visible
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const compile = (type, src) => { const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return sh; };
-    const prog = gl.createProgram();
-    gl.attachShader(prog, compile(gl.VERTEX_SHADER, SILK_VS));
-    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, SILK_FS));
-    gl.linkProgram(prog); gl.useProgram(prog);
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(prog, 'p');
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const uRes = gl.getUniformLocation(prog, 'uRes');
-    const uTime = gl.getUniformLocation(prog, 'uTime');
-    const uGrain = gl.getUniformLocation(prog, 'uGrain');
-    const size = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.max(1, Math.floor(canvas.clientWidth * dpr));
-      canvas.height = Math.max(1, Math.floor(canvas.clientHeight * dpr));
-      gl.viewport(0, 0, canvas.width, canvas.height);
-    };
-    let t = 0, last = performance.now(), raf = 0, visible = true;
-    const draw = () => {
-      if (!canvas.width || !canvas.height) return;
-      canvas.classList.add('is-live');
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, t);
-      gl.uniform1f(uGrain, 1);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    };
-    const frame = (now) => {
-      t += (now - last) / 1000; last = now;
-      draw();
-      raf = requestAnimationFrame(frame);
-    };
-    size();
-    const ro = new ResizeObserver(() => { size(); if (reduce || !raf) draw(); });
-    ro.observe(canvas);
-    // only animate while the hero is on screen
-    const io = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
-      if (reduce) return;
-      if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
-      if (!visible && raf) { cancelAnimationFrame(raf); raf = 0; }
-    });
-    io.observe(canvas);
-    if (reduce) draw(); else { raf = requestAnimationFrame((now) => { last = now; frame(now); }); }
-    stop = () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
-    };
-    const idle = window.requestIdleCallback ? window.requestIdleCallback(start, { timeout: 1200 }) : setTimeout(start, 300);
-    return () => { window.cancelIdleCallback ? window.cancelIdleCallback(idle) : clearTimeout(idle); stop(); };
+    const m = window.matchMedia?.(q); if (!m) return;
+    const f = () => setOk(m.matches);
+    m.addEventListener('change', f);
+    return () => m.removeEventListener('change', f);
   }, []);
-  return <canvas ref={ref} className="hero-silk" aria-hidden="true"/>;
+  return ok;
 }
 
-function Hero({ setPage }) {
-  const { lang, t } = useLang();
-  const german = lang === 'de';
-  return <section className={german ? 'hero hero-german' : 'hero'}>
-    <HeroSilk/>
-   
-    <div className="hero-title-wrap">
-      <p className="hero-kicker-line">{t.heroKicker}</p>
-      <h1 className="hero-greet hero-name"><span className="name-wrap">{t.heroHi} <b>{t.heroName}</b>,<span className="pronounce" aria-hidden="true"><svg viewBox="0 0 44 24" aria-hidden="true"><path d="M42 6C36 18 30 18 26 11S16 4 5 13"/><path d="M13 14 4 14l3-8"/></svg><span>"zahl-mahn"<br/>{t.pronounce}</span></span></span></h1>
-      <p className="hero-intro hero-lead">{t.heroP2}</p>
-      <p className="hero-intro hero-meta">{t.heroP1}</p>
-      <p className="sr-only">{lang === 'de' ? 'Ausgesprochen: zahl-mahn.' : 'Pronounced zahl-mahn, in German.'}</p>
-      <div className="hero-actions">
-        <button className="pill-link" onClick={() => setPage('work')}>{t.seeWork} <ArrowUpRight size={17}/></button>
-      </div>
-      
-    </div>
-    <div className="hero-quotes" role="region" aria-label={t.quotesLabel}><div className="hero-quotes-track">{[...testimonials, ...testimonials].map((q,i)=><figure className="hero-quote" key={i} aria-hidden={i >= testimonials.length || undefined}>
-      <blockquote>“{q.quote}”</blockquote>
-      <figcaption><img src={q.photo} alt="" loading="lazy"/><span><b>{q.name}</b>{q.role}</span></figcaption>
-    </figure>)}</div></div>
-    <div className="hero-bottom">
-      <span>{t.scroll} <ArrowDownRight size={16}/></span>
-    </div>
-  </section>;
-}
-
-function ProjectCard({ p, setPage }) {
-  const { lang } = useLang();
-  return <button className="project-card" onClick={() => setPage(p.id)}>
+function ProjectCard({ p, setPage, spot = false }) {
+  const fine = useFinePointer();
+  const card = <button className="project-card" onClick={() => setPage(p.id)}>
     <div className="project-art">{p.hero ? <img src={p.hero[0]} alt={p.hero[1]} loading="lazy"/> : <div className="nda-art"><span>{p.coverLabel || 'UNDER NDA'}</span><strong>{p.name}</strong></div>}<span className="project-arrow"><ArrowUpRight/></span></div>
-    <div className="project-meta"><div><span className="project-number">{p.number} / 0{projects.length}</span><h3>{p.name}</h3><p>{lang === 'de' ? deDescriptions[p.id] || p.description : p.description}</p></div><div className="tags">{p.tags.map(t=><span key={t}>{t}</span>)}</div></div>
+    <div className="project-meta"><div><span className="project-number">{p.number} / 0{projects.length}</span><h3>{p.name}</h3><p>{p.description}</p></div><div className="tags">{p.tags.map(t=><span key={t}>{t}</span>)}</div></div>
   </button>;
+  if (!(spot && fine)) return card;
+  return <SpotlightCard className="project-spot" spotlightColor="rgba(120, 150, 255, 1)" intensity={0.2} spotlightSize={320} style={{ '--spotlight-card-surface': 'transparent', '--spotlight-card-border': 'transparent', '--spotlight-card-shadow': 'none', padding: 0, borderRadius: 0 }}>{card}</SpotlightCard>;
 }
 
 function MoreProjects({ id, setPage }) {
-  const { t } = useLang();
   const rowRef = useRef(null);
   useEffect(() => enableDragScroll(rowRef.current), []);
   // start with the projects after this one, then wrap around
   const i = projects.findIndex(x => x.id === id);
   const others = [...projects.slice(i + 1), ...projects.slice(0, i)];
   return <section className="more-projects">
-    <h2 id="more-projects-title">{t.more1}<em>{t.more2}</em></h2>
-    <div className="more-row" ref={rowRef} role="region" aria-label={t.more1 + t.more2} tabIndex={0}>
+    <h2 id="more-projects-title">{"More "}<em>{"projects."}</em></h2>
+    <div className="more-row" ref={rowRef} role="region" aria-label={"More " + "projects."} tabIndex={0}>
       {others.map(p => <ProjectCard key={p.id} p={p} setPage={setPage}/>)}
     </div>
   </section>;
 }
 
 function WorkSection({ setPage, standalone=false }) {
-  const { lang, t } = useLang();
   return <section className={standalone ? 'work-section section-pad work-page' : 'work-section section-pad'} id={standalone ? undefined : 'sec-work'}>
-    <div className="section-heading"><div className="section-label"><span>01</span> / {t.selected}</div>{standalone ? <h1 className="work-title">{t.workTitle1}<br/><em>{t.workTitle2}</em></h1> : <h2>{t.homeTitle1}<em>{t.homeTitle2}</em></h2>}<div className="section-intro"><p>{t.workText}</p><p>{t.workText2}</p></div></div>
-    {standalone && <h2 className="sr-only">{t.selected}</h2>}
+    <div className="section-heading"><div className="section-label"><span>02</span> / {"SELECTED PROJECTS"}</div>{standalone ? <h1 className="work-title">{"A selection of"}<br/><em>{"my work."}</em></h1> : <h2>{"Selected "}<em>{"work."}</em></h2>}<div className="section-intro"><p>{"A collection of professional and academic projects exploring how research, interaction design, and visual design come together to solve real-world challenges."}</p><p>{"From complex enterprise applications to augmented reality experiences, each project reflects my approach to creating thoughtful, usable digital interfaces."}</p></div></div>
+    {standalone && <h2 className="sr-only">{"SELECTED PROJECTS"}</h2>}
     <div className="project-list">
-      {(standalone ? projects : projects.slice(0,4)).map((p) => <ProjectCard key={p.id} p={p} setPage={setPage}/>)}
+      {(standalone ? projects : projects.slice(0,4)).map((p) => <ProjectCard key={p.id} p={p} setPage={setPage} spot/>)}
     </div>
-    {!standalone && <button className="pill-link see-work" onClick={() => {setPage('work');window.scrollTo(0,0)}}>{t.seeAll} <ArrowUpRight size={17}/></button>}
+    {!standalone && <button className="pill-link see-work" onClick={() => {setPage('work');window.scrollTo(0,0)}}>{"See all my work"} <ArrowUpRight size={17}/></button>}
   </section>;
 }
 
-function TravelCarousel() {
-  const { t } = useLang();
+// Scrolls a clipped strip upward on a timer. Hovering or focusing the strip eases it to a stop,
+// leaving lets it ease back to speed. On touch, tapping an item pauses and enlarges it (tap again to resume).
+function useAutoScroll(ref, pxPerSec, enabled) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!enabled || !el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ITEM = 'figure, .clip-item';
+    let frame, last = performance.now(), pos = el.scrollTop, speed = 1, target = 1;
+    const clearActive = () => el.querySelectorAll('.is-active').forEach((n) => n.classList.remove('is-active'));
+    const step = (now) => {
+      const dt = Math.min(0.1, (now - last) / 1000);
+      last = now;
+      speed += (target - speed) * Math.min(1, dt * 7);
+      const half = el.scrollHeight / 2;
+      pos += pxPerSec * speed * dt;
+      if (half > 0 && pos >= half) pos -= half;
+      el.scrollTop = pos;
+      frame = requestAnimationFrame(step);
+    };
+    const onEnter = (e) => { if (e.pointerType !== 'touch') target = 0; };
+    const onLeave = (e) => { if (e.pointerType !== 'touch') target = 1; };
+    const onFocusIn = () => { target = 0; };
+    const onFocusOut = (e) => { if (!el.contains(e.relatedTarget)) target = 1; };
+    const onTap = (e) => {
+      if (e.pointerType !== 'touch') return;
+      const item = e.target.closest(ITEM);
+      if (!item || !el.contains(item)) return;
+      const wasActive = item.classList.contains('is-active');
+      clearActive();
+      if (wasActive) target = 1; else { item.classList.add('is-active'); target = 0; }
+    };
+    const onOutside = (e) => {
+      if (e.pointerType === 'touch' && !el.contains(e.target) && el.querySelector('.is-active')) { clearActive(); target = 1; }
+    };
+    el.addEventListener('pointerenter', onEnter);
+    el.addEventListener('pointerleave', onLeave);
+    el.addEventListener('focusin', onFocusIn);
+    el.addEventListener('focusout', onFocusOut);
+    el.addEventListener('pointerup', onTap);
+    document.addEventListener('pointerdown', onOutside);
+    frame = requestAnimationFrame(step);
+    return () => {
+      cancelAnimationFrame(frame);
+      el.removeEventListener('pointerenter', onEnter);
+      el.removeEventListener('pointerleave', onLeave);
+      el.removeEventListener('focusin', onFocusIn);
+      el.removeEventListener('focusout', onFocusOut);
+      el.removeEventListener('pointerup', onTap);
+      document.removeEventListener('pointerdown', onOutside);
+    };
+  }, [enabled]);
+}
+
+function TravelCarousel({ loop = false }) {
   const boxRef = useRef(null), trackRef = useRef(null);
-  useEffect(() => { const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; return reduce ? enableDragScroll(boxRef.current) : enableMarqueeDrag(boxRef.current, trackRef.current, 'travel-scroll', 80); }, []);
-  return <div className="travel-marquee" ref={boxRef} role="region" aria-label={t.travelPhotos}><div className="travel-track" ref={trackRef}>
+  useAutoScroll(boxRef, 40, loop);
+  return <div className="travel-marquee" ref={boxRef} role="region" aria-label={"Travel photos"}><div className="travel-track" ref={trackRef}>
     {[...places, ...places].map(([f,n,y],i)=>{ const clone = i >= places.length; return <figure key={i} aria-hidden={clone || undefined} inert={clone ? '' : undefined}><ZoomImage src={`/travel/${f}.webp`} alt={n}/><figcaption>{n}, {y}</figcaption></figure>; })}
   </div></div>;
 }
@@ -466,72 +388,168 @@ function Timeline({ entries }) {
   </li>; })}</ol>;
 }
 
-// The photo on the front; "My approach" on the back. The "Flip this" hint turns it over.
-function FlipPhoto({ front, back }) {
-  const [flipped, setFlipped] = useState(false);
-  return <div className="about-flip">
-    <div className={flipped ? 'about-flip-inner is-flipped' : 'about-flip-inner'}>
-      <div className="about-flip-face about-flip-front" aria-hidden={flipped || undefined} inert={flipped ? '' : undefined}>{front}</div>
-      <div className="about-flip-face about-flip-back" aria-hidden={!flipped || undefined} inert={!flipped ? '' : undefined}>{back}</div>
-    </div>
-    <button type="button" className="flip-hint" aria-pressed={flipped} onClick={() => setFlipped(f => !f)}>{flipped ? 'Show photo' : 'Flip this'} <span aria-hidden="true">↻</span></button>
-  </div>;
+const pad2 = (n) => String(n).padStart(2, '0');
+
+function ExperienceBlock({ num }) {
+  return <div className="tools-block split"><div className="block-head"><div className="section-label"><span>{pad2(num)}</span> / {"EXPERIENCE"}</div><h2>{"Work "}<em>{"experience."}</em></h2></div><div><Timeline entries={experience}/></div></div>;
 }
 
-function AboutContent({ home = false, part = 'all' }) {
-  const { lang, t } = useLang();
+function EducationBlock({ num }) {
+  return <div className="tools-block split"><div className="block-head"><div className="section-label"><span>{pad2(num)}</span> / {"EDUCATION"}</div><h2>{"My "}<em>{"education."}</em></h2></div><div><Timeline entries={education}/></div></div>;
+}
+
+function SkillsBlock({ num }) {
+  return <div className="skills-block"><div className="section-label"><span>{pad2(num)}</span> / {"SKILLS"}</div><div><h2>{"What I bring "}<em>{"to the table."}</em></h2><p className="block-sub">{"The tools and methods I reach for when the problem gets real."}</p><div className="skill-grid">{skills.map(([k,head,items])=>{ const H = SKILL_HEADS[head]; return <div className="skill" key={k}><h3 className="skill-head"><span className="skill-icon" aria-hidden="true"><H size={18}/></span>{k}</h3><ul className="tool-list">{items.map(([name,icon])=><li key={name}><ToolIcon icon={icon}/>{name}</li>)}</ul></div>; })}</div></div></div>;
+}
+
+function CertificatesBlock({ num, loop = false }) {
   const certBox = useRef(null), certTrack = useRef(null);
-  useEffect(() => { const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; return reduce ? enableDragScroll(certBox.current) : enableMarqueeDrag(certBox.current, certTrack.current, 'cert-scroll', 70); }, []);
-  const label = (text) => lang === 'de' ? deLabels[text] || text : text;
+  useAutoScroll(certBox, 40, loop);
+  return <div className="tools-block stacked"><div className="section-label"><span>{pad2(num)}</span> / {"CERTIFICATES"}</div><div><h2>{"My "}<em>{"certificates."}</em></h2><div className="cert-marquee" ref={certBox}><div className="cert-track" ref={certTrack}>{[...certificates, ...certificates].map((c,i)=><figure className="cert" key={i} aria-hidden={i >= certificates.length || undefined} inert={i >= certificates.length ? '' : undefined}>
+      <ZoomImage src={`/certificates/${c.file}`} alt="" label={`${"Certificate"}: ${c.title}`}/>
+      <figcaption><b>{c.title}</b><span>{c.issuer} · {c.date}</span>{c.verify && <a className="cert-verify" href={c.verify} target="_blank" rel="noopener noreferrer">{"Verify on Coursera"} <ArrowUpRight size={13}/></a>}</figcaption>
+    </figure>)}</div></div></div></div>;
+}
+
+function TravelBlock({ num, loop = false }) {
+  return <div className="tools-block stacked">{num !== undefined && <div className="section-label"><span>{pad2(num)}</span> / {"TRAVEL"}</div>}<div><h2>{"Where "}<em>{"I've been."}</em></h2><p className="block-sub">{"Design is everywhere. Here's what the world looks like through my eyes."}</p><TravelCarousel loop={loop}/></div></div>;
+}
+
+// Moments in the Journey tab: muted clip with a play/pause button, no title or link
+function ClipPlay({ src }) {
+  const video = useRef(null);
+  const openLightbox = useContext(LightboxContext);
+  const [playing, setPlaying] = useState(false);
+  const toggle = () => {
+    const v = video.current;
+    if (!v) return;
+    // a click is a user gesture, so the clip may play with sound
+    if (v.paused) { v.muted = false; v.volume = 1; v.play().catch(() => { v.muted = true; v.play().catch(() => {}); }); }
+    else v.pause();
+  };
+  return (
+    <div className="clip-play"
+      onPointerEnter={(e) => { const v = video.current; if (v && e.pointerType !== 'touch' && !REDUCED_MOTION) { v.muted = true; v.play().catch(() => {}); } }}
+      onPointerLeave={(e) => { if (e.pointerType !== 'touch') video.current?.pause(); }}>
+      <video ref={video} src={src} poster={src.replace('.mp4', '.poster.jpg')} muted playsInline preload="metadata" loop onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onClick={() => { video.current?.pause(); openLightbox({ src, alt: 'Video clip', video: true }); }} />
+      <button type="button" className="clip-btn" onClick={toggle} aria-label={playing ? 'Pause video' : 'Play video'}>
+        {playing ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+      </button>
+    </div>
+  );
+}
+
+function MomentsBlock({ num, loop = false }) {
+  const clipBox = useRef(null);
+  useAutoScroll(clipBox, 40, loop);
+  return <div className="tools-block stacked">{num !== undefined && <div className="section-label"><span>{pad2(num)}</span> / {"MOMENTS"}</div>}<div><h2>{"Moments "}<em>{"I have caught."}</em></h2><p className="block-sub">{"Short clips from the places I've wandered. No script, just vibes."}</p>{loop
+        ? <div className="clip-marquee" ref={clipBox}><div className="clip-track">{[...clips, ...clips].map(([src],k)=><div key={k} className="clip-item" aria-hidden={k>=clips.length||undefined}><ClipPlay src={src}/></div>)}</div></div>
+        : <div className="clip-grid">{clips.map(([src,title])=><a key={src} href={INSTAGRAM} target="_blank" rel="noopener noreferrer"><ClipVideo src={src}/><span><b>{title}</b>{"Watch on Instagram ↗"}</span></a>)}</div>}</div></div>;
+}
+
+function TestimonialsBlock({ num }) {
+  return <div className="tools-block stacked"><div className="section-label"><span>{pad2(num)}</span> / {"TESTIMONIALS"}</div><div><h2>{"What people "}<em>{"say."}</em></h2><div className="quote-grid">{testimonials.map((q)=><figure className="quote-card" key={q.name}><blockquote>“{q.quote}”</blockquote><figcaption><img src={q.photo} alt="" loading="lazy"/><span><b>{q.name}</b>{q.role}</span></figcaption></figure>)}</div></div></div>;
+}
+
+function AboutIntro({ home = false }) {
   const Title = home ? 'h2' : 'h1';
-  const top = part !== 'bottom', bottom = part !== 'top';
-  const n = home ? { exp: 3, edu: 4, bring: 5, cert: 6, places: 7, clips: 8 } : { exp: 1, edu: 2, bring: 3, cert: 4, places: 5, clips: 6 };
-  const Label = ({ k, children }) => <div className="section-label"><span>{String(n[k]).padStart(2, '0')}</span> / {children}</div>;
   return <>
-    {top && <>
-    <div className="about-hero"><div>{home ? <h2 className="about-head">{t.aboutHead1}<em>{t.aboutHead2}</em></h2> : <Title>{t.aboutTitle1}<br/><em>{t.aboutTitle2}</em></Title>}<p className="about-lead">{t.aboutIam} <b>{t.aboutName}</b>{t.aboutLeadRest}</p><p className="about-body">{t.aboutBg}</p><p className="about-body">{t.aboutFocus}</p><p className="about-body">{t.aboutEnjoy}</p>
-      </div><FlipPhoto front={<ZoomImage className="about-photo" src="/salman-paris.webp" alt={t.aboutPhoto}/>} back={<div className="about-approach"><span className="about-beyond-label">{t.approachLabel}</span><p>{t.approach1}</p><p>{t.approach2}</p></div>}/></div>
-    <div className="tools-block split" id={home ? 'sec-experience' : undefined}><div className="block-head"><Label k="exp">{t.expLabel}</Label><h2>{t.exp1}<em>{t.exp2}</em></h2></div><div><Timeline entries={experience}/></div></div>
-    <div className="tools-block split"><div className="block-head"><Label k="edu">{t.eduLabel}</Label><h2>{t.edu1}<em>{t.edu2}</em></h2></div><div><Timeline entries={education}/></div></div>
-    <div className="skills-block"><Label k="bring">{t.bringLabel}</Label><div><h2>{t.bring1}<em>{t.bring2}</em></h2><p className="block-sub">{t.bringText}</p><div className="skill-grid">{skills.map(([k,head,items])=>{ const H = SKILL_HEADS[head]; return <div className="skill" key={k}><h3 className="skill-head"><span className="skill-icon" aria-hidden="true"><H size={18}/></span>{label(k)}</h3><ul className="tool-list">{items.map(([name,icon])=><li key={name}><ToolIcon icon={icon}/>{label(name)}</li>)}</ul></div>; })}</div></div></div>
-    </>}
-    {bottom && <>
-    <div className="tools-block stacked"><Label k="cert">{t.certLabel}</Label><div><h2>{t.cert1}<em>{t.cert2}</em></h2><div className="cert-marquee" ref={certBox}><div className="cert-track" ref={certTrack}>{[...certificates, ...certificates].map((c,i)=><figure className="cert" key={i} aria-hidden={i >= certificates.length || undefined} inert={i >= certificates.length ? '' : undefined}>
-      <ZoomImage src={`/certificates/${c.file}`} alt="" label={`${t.certificate}: ${c.title}`}/>
-      <figcaption><b>{c.title}</b><span>{c.issuer} · {c.date}</span>{c.verify && <a className="cert-verify" href={c.verify} target="_blank" rel="noopener noreferrer">{t.verify} <ArrowUpRight size={13}/></a>}</figcaption>
-    </figure>)}</div></div></div></div>
-    <div className="tools-block stacked"><Label k="places">{t.placesLabel}</Label><div><h2>{t.places1}<em>{t.places2}</em></h2><p className="block-sub">{t.placesText}</p><TravelCarousel/></div></div>
-    <div className="tools-block stacked"><Label k="clips">{t.clipsLabel}</Label><div><h2>{t.clips1}<em>{t.clips2}</em></h2><p className="block-sub">{t.clipsText}</p><div className="clip-grid">{clips.map(([src,title])=><a key={src} href={INSTAGRAM} target="_blank" rel="noopener noreferrer"><ClipVideo src={src}/><span><b>{title}</b>{t.watch}</span></a>)}</div></div></div>
-    </>}
+    <div className="about-hero"><div>{home ? <h2 className="about-head">{"A little about "}<em>{"me."}</em></h2> : <Title>{"Hello,"}<br/><em>{"I'm Salman."}</em></Title>}<p className="about-lead">{"I'm a UX/UI designer with a background in Computer Science, so I understand both how people think and how products get built. That mix helps me design interfaces that work for users and that developers can actually build."}</p><p className="about-body">{"I'm most curious about how people interact with technology, especially new kinds of interaction like augmented reality, connected devices and AI. Studying Media Informatics in Germany has pushed me further into human-computer interaction and research, and moving here as an international student taught me how it feels when things aren't designed for you."}</p><p className="about-body">{"I like to observe before I design, question my own assumptions, and test early instead of guessing. What motivates me most is turning something complicated into something that feels simple and clear."}</p>
+      </div><ZoomImage className="about-photo" src="/salman-paris.webp" alt={"Salman standing in front of the illuminated Eiffel Tower at night"}/></div>
   </>;
 }
 
 function AboutPage() {
-  const { t } = useLang();
   return <main id="main" className="inner-page section-pad">
-    <div className="section-label"><span>{t.aboutLabel}</span> / {t.aboutLabel2}</div>
-    <AboutContent/>
+    <div className="section-label"><span>{"ABOUT"}</span> / {"THE PERSON BEHIND THE PIXELS"}</div>
+    <AboutIntro/>
+    <ExperienceBlock num={1}/>
+    <EducationBlock num={2}/>
+    <SkillsBlock num={3}/>
+    <CertificatesBlock num={4}/>
+    <TravelBlock num={5}/>
+    <MomentsBlock num={6}/>
   </main>;
 }
 
-function HomeAbout() {
-  const { t } = useLang();
-  return <section className="home-about section-pad" id="sec-about">
-    <div className="section-label"><span>02</span> / {t.aboutLabel}</div>
-    <AboutContent home part="top"/>
+const SOCIALS = [[Linkedin, LINKEDIN, 'LinkedIn'], [Instagram, INSTAGRAM, 'Instagram'], [Github, GITHUB, 'GitHub'], [Mail, `mailto:${EMAIL}`, 'Email']];
+
+const TILE_GRADIENTS = [['#E4EAF7', '#C9D5EF'], ['#F4E7E3', '#E6CFC8'], ['#F1E9DC', '#E2D3BC'], ['#E0EEE9', '#C5DDD4'], ['#E7E5F5', '#CFCBEC'], ['#E4EEE0', '#CCDEC4']];
+// Screen designs sit in a browser frame on the gradient; designed covers and photos stay full-bleed.
+const TILE_INFO = {
+  sumato: { result: 'POS live in 10+ client businesses' },
+  ar: { pos: 'center top', result: 'AR concept tested with 4 participants' },
+  muq: { result: 'Working connected-mug prototype' },
+  elearning: { result: '15-minute course, published' },
+  websites: { result: '6 websites designed' },
+  eden: { result: 'Dashboard UI and user evaluation' },
+};
+
+// Tabs for the right panel: Work (projects) and Journey (moments, travel, certificates)
+function HomePanel({ setPage, tab, setTab, active }) {
+  return <>
+    <div className="app-tabs" role="tablist" aria-label="Sections">
+      {[['work', 'Work'], ['journey', 'Journey']].map(([id, label]) => (
+        <button key={id} type="button" role="tab" id={`tab-${id}`} aria-selected={tab === id} aria-controls={`panel-${id}`} className={tab === id ? 'app-tab on' : 'app-tab'} onClick={() => setTab(id)}>{label}</button>
+      ))}
+    </div>
+    {tab === 'work'
+      ? <div role="tabpanel" id="panel-work" aria-labelledby="tab-work"><HomeWork setPage={setPage} active={active}/></div>
+      : <div className="journey-list" role="tabpanel" id="panel-journey" aria-labelledby="tab-journey"><HomeCertificates/><HomeTravel/><HomeMoments/></div>}
+  </>;
+}
+
+// Right column: all projects as gradient tiles
+function HomeWork({ setPage, active }) {
+  return <section className="home-block section-pad" id="sec-work">
+    <div className="hw-grid">{projects.map((p, i) => { const [g1, g2] = TILE_GRADIENTS[i % TILE_GRADIENTS.length]; return (
+      <button key={p.id} type="button" className={p.id === active ? 'hw-tile active' : 'hw-tile'} aria-current={p.id === active || undefined} style={{ '--g1': g1, '--g2': g2 }} onClick={() => setPage(p.id)}>
+        {(() => { const info = TILE_INFO[p.id] || {}; // Tile covers are pre-composed (same gradient, frame and position for every project): public/projects/tiles/<id>.webp
+          const img = p.hero && <img src={`/projects/tiles/${p.id}.webp`} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = p.hero[0]; }} alt={p.hero[1]} loading="lazy" decoding="async" width="1600" height="1200"/>; return <>
+          <span className={p.hero ? 'hw-art tile-cover' : 'hw-art'}>{!p.hero ? <span className="hw-nda">{p.coverLabel || 'UNDER NDA'}</span> : img}</span>
+          <span className="hw-pill">{p.name}</span>
+          {info.result && <span className="hw-result">{info.result}</span>}
+        </>; })()}
+      </button>); })}</div>
   </section>;
 }
 
-function HomeAboutMore() {
-  return <section className="home-about home-about-more section-pad">
-    <AboutContent home part="bottom"/>
+function HomeSkills() {
+  return <section className="home-block section-pad" id="sec-skills"><SkillsBlock num={3}/></section>;
+}
+
+function HomeTestimonials() {
+  return <section className="home-block section-pad" id="sec-quotes"><TestimonialsBlock num={2}/></section>;
+}
+
+function HomeAbout() {
+  return <section className="home-about section-pad" id="sec-about">
+    <div className="section-label"><span>04</span> / {"ABOUT"}</div>
+    <AboutIntro home/>
   </section>;
 }
+
+function HomeEducation() {
+  return <section className="home-block section-pad"><EducationBlock num={5}/></section>;
+}
+
+function HomeCertificates() {
+  return <section className="jcard"><CertificatesBlock num={1} loop/></section>;
+}
+
+function HomeTravel() {
+  return <section className="jcard"><TravelBlock num={2} loop/></section>;
+}
+
+function HomeMoments() {
+  return <section className="jcard"><MomentsBlock num={3} loop/></section>;
+}
+
 
 const TOOL_GLYPHS = { course: GraduationCap, git: GitBranch, database: Database, chart: BarChart3, sheet: Sheet, workflow: Workflow, slides: Presentation, chat: MessageSquare,
   interviews: MessagesSquare, observe: Eye, usability: MousePointerClick, thinkaloud: Speech, ab: Split, workload: Gauge,
   wireframe: LayoutTemplate, prototype: MousePointer2, visual: Palette, a11y: Accessibility, system: Component, ai: Sparkles,
-  cloud: Cloud, trello: Kanban, slack: Hash };
+  cloud: Cloud, trello: Kanban, slack: Hash, competitor: Telescope, tokens: Layers, dataviz: ChartPie, responsive: MonitorSmartphone };
 const SKILL_HEADS = { research: ScanEye, ui: Figma, tools: Wrench, tech: CodeXml };
 function ToolIcon({ icon }) {
   if (icon.startsWith('icon:')) { const G = TOOL_GLYPHS[icon.slice(5)]; return <span className="tool-glyph" aria-hidden="true"><G size={13}/></span>; }
@@ -561,7 +579,6 @@ function CoverSwap({ items, interval = 2000 }) {
 }
 
 function CaseCarousel({ items, interval = 2000 }) {
-  const { t } = useLang();
   const ref = useRef(null);
   const paused = useRef(false);
   const index = useRef(0);
@@ -586,21 +603,20 @@ function CaseCarousel({ items, interval = 2000 }) {
   useEffect(() => enableDragScroll(ref.current), []);
   const pause = (v) => () => { paused.current = v; };
   return <div className="case-carousel" onMouseEnter={pause(true)} onMouseLeave={pause(false)} onFocus={pause(true)} onBlur={pause(false)} onTouchStart={pause(true)} onTouchEnd={pause(false)}>
-    <div className="case-carousel-track" ref={ref} onScroll={onScroll} role="region" aria-label={t.appScreens} tabIndex={0}>
+    <div className="case-carousel-track" ref={ref} onScroll={onScroll} role="region" aria-label={"App screens"} tabIndex={0}>
       {slides.map(([src, alt, caption], i) => i < n
         ? <Figure key={i} src={src} alt={alt} caption={caption}/>
         : <div key={i} className="case-fig-clone" aria-hidden="true" inert=""><Figure src={src} alt="" caption={caption}/></div>)}
     </div>
-    <div className="case-carousel-dots">{items.map((it, i) => <button key={it[0]} type="button" className={i === active ? 'active' : ''} aria-label={`${t.showScreen} ${i + 1}`} aria-current={i === active || undefined} onClick={() => goTo(i)}/>)}</div>
+    <div className="case-carousel-dots">{items.map((it, i) => <button key={it[0]} type="button" className={i === active ? 'active' : ''} aria-label={`${"Show screen"} ${i + 1}`} aria-current={i === active || undefined} onClick={() => goTo(i)}/>)}</div>
   </div>;
 }
 
 function Block({ block }) {
-  const { t } = useLang();
   if (block.type === 'figs') return <div className={`case-grid c${block.cols}${block.phones ? ' phones' : ''}${block.pages ? ' pages' : ''}${block.wide ? ' wide' : ''}`}>{block.items.map(([src,alt,caption])=><Figure key={src} src={src} alt={alt} caption={caption} tall={block.pages || block.wide}/>)}</div>;
-  if (block.type === 'cards') return <div className={`case-grid c${block.cols}`}>{block.items.map(c=><div className="case-card" key={c.title}>{c.img && <ZoomImage src={c.img} alt="" label={`${t.persona}: ${c.title}`}/>}<small>{c.tag}</small><h3 className="case-card-title">{c.title}</h3><p>{c.text}</p></div>)}</div>;
+  if (block.type === 'cards') return <div className={`case-grid c${block.cols}`}>{block.items.map(c=><div className="case-card" key={c.title}>{c.img && <ZoomImage src={c.img} alt="" label={`${"Persona"}: ${c.title}`}/>}<small>{c.tag}</small><h3 className="case-card-title">{c.title}</h3><p>{c.text}</p></div>)}</div>;
   if (block.type === 'list') return <ul className="case-list">{block.items.map(i=><li key={i}><Rich text={i}/></li>)}</ul>;
-  if (block.type === 'pairs') return <div className="case-pairs"><div className="pair-head"><span>{block.head[0]}</span><span>{block.head[1]}</span></div>{block.items.map(([title,a,b])=><div className="pair-row" key={title}><p><Rich text={title}/></p><div className="case-grid c2"><Figure src={a[0]} alt={a[1]}/><Figure src={b[0]} alt={b[1]}/></div></div>)}</div>;
+  if (block.type === 'pairs') return <div className="case-pairs"><div className="pair-head"><span>{block.head[0]}</span><span>{block.head[1]}</span></div>{block.items.map(([title,a,b])=><div className="pair-row" key={title}><p><Rich text={title}/></p><div className="case-grid c2"><Figure src={a[0]} alt={a[1]} caption={`**${block.head[0]}**`}/><Figure src={b[0]} alt={b[1]} caption={`**${block.head[1]}**`}/></div></div>)}</div>;
   if (block.type === 'carousel') return <CaseCarousel items={block.items} interval={block.interval}/>;
   if (block.type === 'split') return <div className="case-split"><div>{block.left.map((b,i)=><Block block={b} key={i}/>)}</div><div>{block.right.map((b,i)=><Block block={b} key={i}/>)}</div></div>;
   if (block.type === 'facts') return <dl className="quick-row case-facts">{block.items.map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>;
@@ -632,16 +648,51 @@ function arrangeBlocks(blocks) {
 // Quick-scan row under the title: Role, Timeline, Team and Tools, always shown
 function quickRow(p) {
   const pick = (re) => p.meta.find(([k]) => re.test(k))?.[1] || '—';
-  const items = [['Role', pick(/role/i)], ['Timeline', pick(/duration|timeline/i)], ['Team', pick(/team/i)], ['Tools', pick(/tools/i)]];
+  const items = [['Role', pick(/role/i)], ['Timeline', pick(/duration|timeline/i)], ['Team', pick(/team/i)], ['Tools', pick(/tools/i)]].filter(([, v]) => v !== '—');
   return <dl className="quick-row">{items.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>;
 }
 
-function ProjectPage({ id, setPage }) {
-  const { lang, t } = useLang();
+function ProjectPage({ id, setPage, panel = false }) {
   const p = projects.find(x=>x.id===id) || projects[0];
+  useEffect(() => {
+    if (!panel) return;
+    const onKey = (e) => { if (e.key === 'Escape' && !document.querySelector('.lightbox')) setPage('home'); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [panel, setPage]);
+  if (panel) {
+    const timeline = p.meta.find(([k]) => /duration|timeline/i.test(k))?.[1];
+    return <article className="pd" lang="en" aria-labelledby="pd-title">
+      <header className="pd-head">
+        <div>
+          <h1 id="pd-title">{p.pageName || p.name}</h1>
+          <p className="pd-meta">
+            {p.live && <a href={p.live[0]} target="_blank" rel="noopener noreferrer"><Globe size={15} aria-hidden="true"/>{"See it live"}</a>}
+            {(p.links || []).map(([url, label]) => <React.Fragment key={url}><span className="pd-dot" aria-hidden="true">•</span><a href={url} target="_blank" rel="noopener noreferrer">{/github/i.test(url) ? <Github size={15} aria-hidden="true"/> : <ArrowUpRight size={15} aria-hidden="true"/>}{label}</a></React.Fragment>)}
+            {(p.live || (p.links || []).length > 0) && timeline && <span className="pd-dot" aria-hidden="true">•</span>}
+            {timeline && <span><CalendarDays size={15} aria-hidden="true"/>{timeline}</span>}
+          </p>
+        </div>
+        <button type="button" className="pd-close" onClick={() => setPage('home')} aria-label={"Close project"}><X size={18}/></button>
+      </header>
+      <div className="pd-intro">
+        {p.subtitle && <h2>{p.subtitle}</h2>}
+        <p>{p.lede}</p>
+        <div className="tags">{p.tags.map(t=><span key={t}>{t}</span>)}</div>
+      </div>
+      {(p.id !== 'websites' || p.story || p.impact) && <section className="pd-glance" aria-labelledby="pd-glance-title">
+        <h2 id="pd-glance-title" className="pd-glance-title">{"At a glance"}</h2>
+        {p.id !== 'websites' && quickRow(p)}
+        {p.story && <div className="pd-glance-story">{p.story.map(([k,v])=><div key={k}><h3>{k}</h3><p>{v}</p></div>)}</div>}
+        {p.impact && <ul className="pd-glance-stats">{p.impact.map(([n,l])=><li key={l}><strong>{n}</strong><span>{l.split(':')[0]}</span></li>)}</ul>}
+      </section>}
+      {p.hero && !p.noCover && <div className="case-cover pd-cover"><Figure src={p.hero[0]} alt={p.hero[1]} caption={p.hero[2]}/></div>}
+      {p.note && <p className="case-note">{p.note}</p>}
+      {p.sections.map(s=><section className="case-section" key={s.title}><h2>{s.title}</h2>{s.text && <p className="case-text">{s.text}</p>}{arrangeBlocks(s.blocks).map((b,i)=><Block block={b} key={i}/>)}</section>)}
+    </article>;
+  }
   return <main id="main" className="inner-page project-detail section-pad" lang="en">
-    <div className="section-label" lang={lang}><span>{t.caseLabel}</span> / {t.caseLabel2}</div>
-    {lang === 'de' && <p className="case-note" lang="de">{t.caseNote}</p>}
+    <div className="section-label"><span>{"CASE STUDY"}</span> / {"SELECTED WORK"}</div>
     <div className={p.headerImage ? 'detail-top has-cover' : 'detail-top'}><div className="detail-heading"><span className="project-number">{p.number} / 0{projects.length}</span><h1>{p.pageName || p.name}</h1>{p.subtitle && <p className="detail-subtitle">{p.subtitle}</p>}{p.id !== 'websites' && quickRow(p)}<p>{p.lede}</p><div className="tags">{p.tags.map(t=><span key={t}>{t}</span>)}</div>{[p.live, ...(p.links || [])].filter(Boolean).map(([url,label])=><a className="pill-link" key={url} href={url} target="_blank" rel="noopener noreferrer">{label} <ArrowUpRight size={17}/></a>)}</div>{p.headerImage && p.hero && <div className="case-cover header-cover"><Figure src={p.hero[0]} alt={p.hero[1]} caption={p.hero[2]}/></div>}{p.meta.length > 0 && !p.noFacts && <div className="detail-facts">{p.meta.map(([k,v])=><div key={k}><small>{k.toUpperCase()}</small><b>{v}</b></div>)}</div>}</div>
     {!p.headerImage && p.hero && !p.noCover && <div className={p.coverWide ? 'case-cover wide' : 'case-cover'}><Figure src={p.hero[0]} alt={p.hero[1]} caption={p.hero[2]}/></div>}
     {p.story && <div className="case-story">{p.story.map(([k,v])=><div key={k}><small>{k.toUpperCase()}</small><p>{v}</p></div>)}</div>}
@@ -649,13 +700,12 @@ function ProjectPage({ id, setPage }) {
     {p.note && <p className="case-note">{p.note}</p>}
     {p.sections.map(s=><section className="case-section" key={s.title}><h2>{s.title}</h2>{s.text && <p className="case-text">{s.text}</p>}{arrangeBlocks(s.blocks).map((b,i)=><Block block={b} key={i}/>)}</section>)}
     <MoreProjects id={id} setPage={setPage}/>
-    <button className="pill-link" lang={lang} onClick={()=>setPage('work')}>{t.backAll} <ArrowRight size={17}/></button>
+    <button className="pill-link" onClick={()=>setPage('work')}>{"Back to all work"} <ArrowRight size={17}/></button>
   </main>;
 }
 
 function CookieBanner({ onClose, onSettings }) {
-  const { t } = useLang();
-  return <div className="cookie-banner"><div><b>{t.cookieTitle}</b><p>{t.cookieText}</p></div><div><button onClick={onSettings}>{t.cookieSettings}</button><button className="cookie-accept" onClick={onClose}>{t.cookieOk}</button></div></div>;
+  return <div className="cookie-banner"><div><b>{"Cookies, but make them useful."}</b><p>{"This site uses only essential local functionality. No tracking cookies are set."}</p></div><div><button onClick={onSettings}>{"Settings"}</button><button className="cookie-accept" onClick={onClose}>{"Got it"}</button></div></div>;
 }
 
 // Scroll reveal: [selector, direction]. Items sharing a parent are staggered.
@@ -683,8 +733,8 @@ function useScrollReveal(page) {
       el.setAttribute('data-shown', '');
       const delay = parseFloat(el.style.getPropertyValue('--rd')) || 0;
       // hand the element back to its normal styles (hover effects etc.) once it has arrived
-      timers.push(setTimeout(() => { el.removeAttribute('data-reveal'); el.removeAttribute('data-shown'); el.style.removeProperty('--rd'); }, delay * 1000 + 1000));
-    }), { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      timers.push(setTimeout(() => { el.removeAttribute('data-reveal'); el.removeAttribute('data-shown'); el.style.removeProperty('--rd'); }, delay * 1000 + 450));
+    }), { threshold: 0.1, rootMargin: '0px' });
     const frame = requestAnimationFrame(() => {
       REVEAL.forEach(([sel, dir]) => {
         const count = new Map();
@@ -692,7 +742,7 @@ function useScrollReveal(page) {
           if (el.closest('.hero') || el.hasAttribute('data-reveal')) return;
           const i = count.get(el.parentNode) || 0; count.set(el.parentNode, i + 1);
           el.setAttribute('data-reveal', dir);
-          el.style.setProperty('--rd', `${Math.min(i, 6) * 0.1}s`);
+          el.style.setProperty('--rd', `${Math.min(i, 4) * 0.05}s`);
           io.observe(el);
         });
       });
@@ -714,38 +764,39 @@ function App() {
     return route();
   });
   useScrollReveal(page);
+  const isProject = projects.some(p => p.id === page);
+  const [homeTab, setHomeTab] = useState('work');
   const depth = useRef(-1);
   // The site is English only: no language switch, no automatic German.
-  const lang = 'en';
-  const t = strings.en;
-  const setLang = useCallback(() => {}, []);
-  useEffect(()=>{ document.documentElement.lang = lang; },[lang]);
   const [zoomed,setZoomed] = useState(null);
   const closeZoom = useCallback(() => setZoomed(null), []);
   useEffect(closeZoom,[page,closeZoom]);
   const [cookie,setCookie] = useState(!localStorage.getItem('sb-cookie'));
   const [settings,setSettings] = useState(false);
   useEffect(()=>{const link=document.querySelector('link[rel="canonical"]');const url='https://salmanashrafportfolio.github.io'+(page==='notfound'?'/':pageToPath(page));if(link)link.href=url;const og=document.querySelector('meta[property="og:url"]');if(og)og.setAttribute('content',url);},[page]);
-  useEffect(()=>{document.title = page==='notfound'?'Page not found — Salman Bhatti':page==='home'?t.titleHome:page==='about'?t.titleAbout:page==='work'?t.titleWork:`${projects.find(p=>p.id===page)?.name || t.work} — Salman Bhatti`;},[page,t]);
+  useEffect(()=>{document.title = page==='notfound'?'Page not found — Salman Bhatti':page==='home'?"Salman Bhatti — UX/UI Designer":page==='about'?"About — Salman Bhatti":page==='work'?"Work — Salman Bhatti":`${projects.find(p=>p.id===page)?.name || "Work"} — Salman Bhatti`;},[page]);
   useEffect(()=>{window.scrollTo({top:0,behavior:'instant'});if(page==='notfound')return;const target=pageToPath(page);if(window.location.pathname!==target)window.history.pushState({depth:(window.history.state?.depth??-1)+1},'',target);else if(window.history.state?.depth==null)window.history.replaceState({depth:0},'');depth.current=window.history.state.depth;},[page]);
   const [section,setSection] = useState(null);
   const goSection = useCallback((id) => { setSection({ id }); setPage('home'); }, []);
   useEffect(()=>{ if (!section || page !== 'home') return; const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; document.getElementById(section.id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); },[section,page]);
   useEffect(()=>{const onPop=()=>setPage(route());window.addEventListener('popstate',onPop);return ()=>window.removeEventListener('popstate',onPop)},[]);
   const closeCookie = ()=>{localStorage.setItem('sb-cookie','yes');setCookie(false);setSettings(false)};
-  return <LangContext.Provider value={{ lang, t, setLang }}><LightboxContext.Provider value={setZoomed}><div id="top"><a className="skip-link" href="#main">Skip to content</a><Header setPage={setPage} goSection={goSection}/>
-    {page!=='home' && <BackButton page={page} setPage={setPage}/>}
-    {page==='home' && <main id="main"><Hero setPage={setPage}/><WorkSection setPage={setPage}/><HomeAbout/><HomeAboutMore/></main>}
+  return <LightboxContext.Provider value={setZoomed}><div id="top"><a className="skip-link" href="#main">Skip to content</a>
+    {page!=='home' && !isProject && <BackButton page={page} setPage={setPage}/>}
+    {(page==='home' || isProject) && <main id="main"><div className={isProject ? 'app-shell detail' : 'app-shell'}>
+      {!isProject && <HomeSidebar socials={SOCIALS} email={EMAIL}/>}
+      <div className={isProject ? 'app-panel app-list' : 'app-panel'}><HomePanel setPage={setPage} active={isProject ? page : null} tab={homeTab} setTab={(t) => { setHomeTab(t); if (isProject) setPage('home'); }}/></div>
+      {isProject && <div className="app-detail" key={page}><ProjectPage id={page} setPage={setPage} panel/></div>}
+    </div></main>}
     {page==='work' && <main id="main"><WorkSection setPage={setPage} standalone/></main>}
     {page==='about' && <AboutPage/>}
     {page==='notfound' && <main id="main" className="inner-page section-pad not-found"><h1>Page not found</h1><p>This address doesn’t lead to a page on this site.</p><button className="pill-link" onClick={() => setPage('home')}>Back to home <ArrowRight size={17}/></button></main>}
-    {projects.some(p=>p.id===page) && <ProjectPage id={page} setPage={setPage}/>}
-    <Footer/>
+    {page!=='home' && !isProject && <Footer/>}
     <BackToTop/>
     {zoomed && <Lightbox image={zoomed} onClose={closeZoom}/>}
     {cookie && <CookieBanner onClose={closeCookie} onSettings={()=>setSettings(true)}/>}
-    {settings && <div className="modal-backdrop" onClick={()=>setSettings(false)}><div className="cookie-modal" onClick={e=>e.stopPropagation()}><button className="modal-close" aria-label={t.close} onClick={()=>setSettings(false)}><X/></button><Sparkles/><h3>{t.cookieModalTitle}</h3><p>{t.cookieModalText}</p><button className="pill-link" onClick={closeCookie}>{t.cookieSave} <ArrowRight size={16}/></button></div></div>}
-  </div></LightboxContext.Provider></LangContext.Provider>;
+    {settings && <div className="modal-backdrop" onClick={()=>setSettings(false)}><div className="cookie-modal" onClick={e=>e.stopPropagation()}><button className="modal-close" aria-label={"Close"} onClick={()=>setSettings(false)}><X/></button><Sparkles/><h3>{"Cookie preferences"}</h3><p>{"This site doesn't use analytics or advertising cookies. Local preferences only remember your language choice and that you dismissed this notice."}</p><button className="pill-link" onClick={closeCookie}>{"Save preferences"} <ArrowRight size={16}/></button></div></div>}
+  </div></LightboxContext.Provider>;
 }
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App/></React.StrictMode>);
