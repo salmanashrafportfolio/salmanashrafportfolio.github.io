@@ -704,10 +704,6 @@ function ProjectPage({ id, setPage, panel = false }) {
   </main>;
 }
 
-function CookieBanner({ onClose, onSettings }) {
-  return <div className="cookie-banner"><div><b>{"Cookies, but make them useful."}</b><p>{"This site uses only essential local functionality. No tracking cookies are set."}</p></div><div><button onClick={onSettings}>{"Settings"}</button><button className="cookie-accept" onClick={onClose}>{"Got it"}</button></div></div>;
-}
-
 // Scroll reveal: [selector, direction]. Items sharing a parent are staggered.
 const REVEAL = [
   ['#sec-work .section-heading > *', 'left'],
@@ -771,8 +767,6 @@ function App() {
   const [zoomed,setZoomed] = useState(null);
   const closeZoom = useCallback(() => setZoomed(null), []);
   useEffect(closeZoom,[page,closeZoom]);
-  const [cookie,setCookie] = useState(!localStorage.getItem('sb-cookie'));
-  const [settings,setSettings] = useState(false);
   useEffect(()=>{const link=document.querySelector('link[rel="canonical"]');const url='https://salmanashrafportfolio.github.io'+(page==='notfound'?'/':pageToPath(page));if(link)link.href=url;const og=document.querySelector('meta[property="og:url"]');if(og)og.setAttribute('content',url);},[page]);
   useEffect(()=>{document.title = page==='notfound'?'Page not found — Salman Bhatti':page==='home'?"Salman Bhatti — UX/UI Designer":page==='about'?"About — Salman Bhatti":page==='work'?"Work — Salman Bhatti":`${projects.find(p=>p.id===page)?.name || "Work"} — Salman Bhatti`;},[page]);
   useEffect(()=>{window.scrollTo({top:0,behavior:'instant'});if(page==='notfound')return;const target=pageToPath(page);if(window.location.pathname!==target)window.history.pushState({depth:(window.history.state?.depth??-1)+1},'',target);else if(window.history.state?.depth==null)window.history.replaceState({depth:0},'');depth.current=window.history.state.depth;},[page]);
@@ -780,7 +774,6 @@ function App() {
   const goSection = useCallback((id) => { setSection({ id }); setPage('home'); }, []);
   useEffect(()=>{ if (!section || page !== 'home') return; const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; document.getElementById(section.id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); },[section,page]);
   useEffect(()=>{const onPop=()=>setPage(route());window.addEventListener('popstate',onPop);return ()=>window.removeEventListener('popstate',onPop)},[]);
-  const closeCookie = ()=>{localStorage.setItem('sb-cookie','yes');setCookie(false);setSettings(false)};
   return <LightboxContext.Provider value={setZoomed}><div id="top"><a className="skip-link" href="#main">Skip to content</a>
     {page!=='home' && !isProject && <BackButton page={page} setPage={setPage}/>}
     {(page==='home' || isProject) && <main id="main"><div className={isProject ? 'app-shell detail' : 'app-shell'}>
@@ -794,8 +787,6 @@ function App() {
     {page!=='home' && !isProject && <Footer/>}
     <BackToTop/>
     {zoomed && <Lightbox image={zoomed} onClose={closeZoom}/>}
-    {cookie && <CookieBanner onClose={closeCookie} onSettings={()=>setSettings(true)}/>}
-    {settings && <div className="modal-backdrop" onClick={()=>setSettings(false)}><div className="cookie-modal" onClick={e=>e.stopPropagation()}><button className="modal-close" aria-label={"Close"} onClick={()=>setSettings(false)}><X/></button><Sparkles/><h3>{"Cookie preferences"}</h3><p>{"This site doesn't use analytics or advertising cookies. Local preferences only remember your language choice and that you dismissed this notice."}</p><button className="pill-link" onClick={closeCookie}>{"Save preferences"} <ArrowRight size={16}/></button></div></div>}
   </div></LightboxContext.Provider>;
 }
 
